@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CEBattle;
+using System;
 
 public class Player
 {
@@ -45,6 +46,14 @@ public class Player
         if(p.Perte(hit))
         {
             Console.WriteLine("Me " + name + " declared " + p.name + " dead, hahahahahah");
+        }
+    }
+
+    public void Attack(Monstre m, int hit)
+    {
+        if (m.Perte(hit))
+        {
+            Console.WriteLine("Me " + name + " declared " + m.name + " dead, hahahahahah");
         }
     }
 

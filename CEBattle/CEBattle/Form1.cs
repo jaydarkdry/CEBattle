@@ -131,6 +131,14 @@ namespace CEBattle
                 p.ShowStatCmd();
             }
 
+            Monstre m1 = new CEBattle.Monstre("Bouftou", 24);
+
+            m1.ShowMonsterStats();
+            p2.Attack(m1, 24);
+        
+            
+
+
         }
 
         public void DisplayMsg(int nb, float fl)
