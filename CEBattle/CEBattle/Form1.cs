@@ -31,6 +31,113 @@ namespace CEBattle
 
             //UniTests
 
+
+            // Camille help
+            // Type
+            int integer = 0;
+            int integer2 = 20;
+            long longer = 0;
+            float floating = 0.2f;
+            double doubler = 0.2;
+            string text = "jhsaiudhsdaama  \n jhadsa";
+            bool condition = true;
+
+            // Comment
+            // dfghjklskjhfds
+            /* bla ajdasnd s
+            kjsadsa
+            nbsakdsa */
+
+            Console.WriteLine("Je suis là!");
+
+            Console.WriteLine("Je suis un string" + text);
+
+            float add = integer + floating;
+            Console.WriteLine("Add: " + add);
+
+            // Condition statement
+            if (integer2 != integer)
+            {
+                Console.WriteLine("Yess!");
+            }
+            else if(integer2 <= integer)
+            {
+                Console.WriteLine("Satisfied");
+            }
+            else
+            {
+                Console.WriteLine("NO!!");
+            }
+
+            switch (integer)
+            {
+                case 0:
+                    Console.WriteLine("00!!!");
+                    break;
+                case 1:
+                    Console.WriteLine("111!!");
+                    break;
+                default:
+                    Console.WriteLine("J'em colisse");
+                    break;
+            }
+
+            // integer - 4  est plus petit que integer2
+
+            if (integer -4 < integer2 && integer2 > 10)
+            {
+
+            }
+            else
+            {
+
+            }
+
+
+            // loop
+            do
+            {
+                Console.WriteLine("Youppi" + integer2);
+                integer2 += 2;
+            } while (integer2 < 40);
+
+            // integer2 = 40
+            while (integer2 < 40)
+            {
+                Console.WriteLine("Youppiwhile" + integer2);
+            } 
+
+            for(int i=0; i<20; i++)
+            {
+                Console.WriteLine("Chat" + i);
+            }
+
+            //Arrays
+            int[] integers = new int[30];
+
+            integers[29] = 0;
+
+
+            ShowMesg(text);
+            General gen1 = new General(10, 20, "Gerard");
+            General gen2 = new General(20, 10, "Gertrude");
+
+            ShowMesg(gen1.GetStat());
+            ShowMesg(gen2.GetStat());
+
+            gen1.Attack(gen2, 9000);
+
+            ShowMesg(gen2.GetStat());
+        }
+
+        public void ShowMesg(string s)
+        {
+            Console.WriteLine("My message:" + s);
+        }
+
+        public int SjsjdSjhss(int a, int b)
+        {
+            return (a * b)+(b * a);
         }
 
         private void Form1_Load(object sender, EventArgs e)
