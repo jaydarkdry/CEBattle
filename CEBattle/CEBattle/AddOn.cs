@@ -18,7 +18,10 @@ namespace CEBattle
             
         public AddOn(string name, bool mole, Config.Aids aid, Config.AidsLevel aidsLevel)
         {
-            //...
+            Name = name;
+            Mole = mole;
+            Aid = aid;
+            AidsLevel = aidsLevel;
         }
 
         //Empty constructor need to be populate later
@@ -31,7 +34,11 @@ namespace CEBattle
 
         public Boolean Validate()
         {
-            //...
+            if (Name == null || Name == "")
+            {
+                return false;
+            }
+
             return true;
         }
     }
