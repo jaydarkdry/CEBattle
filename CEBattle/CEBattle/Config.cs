@@ -74,6 +74,49 @@ namespace CEBattle
             "Suicidaire"
         };
 
+        //1
+        public enum Fortification
+        {
+            Nothing,
+            Barack,
+            Rambard,
+            Fort,
+            Castle
+
+        }
+
+        static public string[] FortificationLbl =
+        {
+            "Rien",
+            "Baraque",
+            "Rambard",
+            "Fort",
+            "Chateau"
+        
+        };
+
+        //2
+        public enum Fatigue
+        {
+            None,
+            Little,
+            Moderate,
+            Lot,
+            Limit
+
+        }
+
+        static public string[] FatigueLbl =
+        {
+            "Aucun",
+            "Peu",
+            "Modéré",
+            "Beacoup",
+            "Limite"
+
+        };
+        
+
         static public int UnitType = 4;
 
 
@@ -91,6 +134,16 @@ namespace CEBattle
         static public string EnumToString(AidsLevel a)
         {
             return AidsLevelLbl[(int)a];
+        }
+
+        static public string EnumToString(Fortification a)
+        {
+            return FortificationLbl[(int)a];
+        }
+
+        static public string EnumToString(Fatigue a)
+        {
+            return FatigueLbl[(int)a];
         }
 
     }
