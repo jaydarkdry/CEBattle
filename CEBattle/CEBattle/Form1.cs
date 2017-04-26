@@ -30,7 +30,8 @@ namespace CEBattle
             _war = new War();
 
             //UniTests
-
+            int a = WarMath.ResultBalance(500,123);
+            Console.WriteLine("Mon chiffre est " + a);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -42,10 +43,22 @@ namespace CEBattle
         private void _fightBtn_Click(object sender, EventArgs e)
         {
             // return and display message in _errorMsg.text is anything is wrong
-
-            // Step 1, check if all the basis are fill (_battleName, _armyName1, _armyName2)
+            if (_battleName.Text == "")
+            {
+                _errorMsg.Text = "Veuillez inscire le nom de la bataille";
+            }
+            if (_armyName1.Text == "")
+            {
+                _errorMsg.Text = "Veuillez inscrire le nom de la première armée";
+            }
+            if (_armyName2.Text == "")
+            {
+                _errorMsg.Text = "Veuillez inscrire le nom de la deuxième armée";
+            }
+            // Step 1, check if all the basis are fill (_battleName, _armyName1, _armyName2) ""
 
             // Step 2, deeper analysis, at least one: _generalCB1 and _generalCB2
+        
             // Must validate they contains (call method validate)
 
         }

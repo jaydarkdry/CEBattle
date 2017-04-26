@@ -74,6 +74,7 @@
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this._aidDelBtn2 = new System.Windows.Forms.Button();
             this.panel4 = new System.Windows.Forms.Panel();
+            this._aidMole2 = new System.Windows.Forms.CheckBox();
             this._aidTypeCB2 = new System.Windows.Forms.ComboBox();
             this._aidName2 = new System.Windows.Forms.TextBox();
             this.label65 = new System.Windows.Forms.Label();
@@ -175,7 +176,6 @@
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this._techniqueTxt = new System.Windows.Forms.Label();
             this.label85 = new System.Windows.Forms.Label();
-            this._aidMole2 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this._fortificationLevelTB1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._fortificationLevelTB2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._exhaustionLevelTB1)).BeginInit();
@@ -685,6 +685,16 @@
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(379, 65);
             this.panel4.TabIndex = 64;
+            // 
+            // _aidMole2
+            // 
+            this._aidMole2.AutoSize = true;
+            this._aidMole2.Location = new System.Drawing.Point(272, 8);
+            this._aidMole2.Name = "_aidMole2";
+            this._aidMole2.Size = new System.Drawing.Size(57, 17);
+            this._aidMole2.TabIndex = 83;
+            this._aidMole2.Text = "Taupe";
+            this._aidMole2.UseVisualStyleBackColor = true;
             // 
             // _aidTypeCB2
             // 
@@ -1664,16 +1674,6 @@
             this.label85.Size = new System.Drawing.Size(241, 31);
             this.label85.TabIndex = 2;
             this.label85.Text = "Journal de bataille:";
-            // 
-            // _aidMole2
-            // 
-            this._aidMole2.AutoSize = true;
-            this._aidMole2.Location = new System.Drawing.Point(272, 8);
-            this._aidMole2.Name = "_aidMole2";
-            this._aidMole2.Size = new System.Drawing.Size(57, 17);
-            this._aidMole2.TabIndex = 83;
-            this._aidMole2.Text = "Taupe";
-            this._aidMole2.UseVisualStyleBackColor = true;
             // 
             // unitTactic1
             // 
