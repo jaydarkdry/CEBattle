@@ -24,7 +24,6 @@ namespace CEBattle
             Random r = new Random();
             float value = r.NextDouble() ....
             */
-
             // Step 2, calculate the loss according to the calculation
             // Example: side1: 300   side2: 100
             // Random caught: 350
@@ -32,8 +31,22 @@ namespace CEBattle
             // 400 (300+100)-350 = 50
             // Side 2 so 50 and not -50
             // It means that the first skirmish was not that tight and the loss on side1 is pretty significative, at least 50 units on side one will be lost (Apply bonus later)
+            Random r = new Random();
+            float value = (float)r.NextDouble();
+            int caught = (int)(value * (side1 + side2));
+            int fightResult = ((side1 + side2) - caught);
+           
 
-            return 0; // Just to compile
+            if (fightResult>=side1)
+            {
+                return (fightResult);
+            }
+            else
+            {
+                return -(side1 - caught);
+            }
+
         }
+
     }
 }
