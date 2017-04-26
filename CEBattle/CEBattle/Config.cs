@@ -34,11 +34,36 @@ namespace CEBattle
             "Divin"
         };
 
+        public enum Attitude
+        {
+            Scared,
+            Passif,
+            Neutral,
+            Agressive,
+            Suicide
+        }
+
+        static public string[] AttitudeLbl =
+        {
+            "Peureux",
+            "Passif",
+            "Neutre",
+            "Agressif",
+            "Suicidaire"
+        };
+
+        static public int UnitType = 4;
+
 
         // Enum to String section
         static public string EnumToString(Aids a)
         {
             return AidsLbl[(int)a];
+        }
+
+        static public string EnumToString(Attitude a)
+        {
+            return AttitudeLbl[(int)a];
         }
 
     }
