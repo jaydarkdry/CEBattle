@@ -11,15 +11,27 @@ namespace CEBattle
     /// </summary>
     class AddOn
     {
+        public string Name { get; set; }
+        public bool Mole { get; set; }
+        public Config.Aids Aid { get; set; }
+        public Config.AidsLevel AidsLevel { get; set; }
+            
+        public AddOn(string name, bool mole, Config.Aids aid, Config.AidsLevel aidsLevel)
+        {
+            //...
+        }
+
         //Empty constructor need to be populate later
         public AddOn()
         {
-
+            Mole = false;
+            Aid = Config.Aids.Defense;
+            AidsLevel = Config.AidsLevel.Minimal;
         }
 
         public Boolean Validate()
         {
-            //TODO
+            //...
             return true;
         }
     }

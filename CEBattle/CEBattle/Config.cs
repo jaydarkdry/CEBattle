@@ -11,6 +11,8 @@ namespace CEBattle
     /// </summary>
     class Config
     {
+        // Add-on
+
         // Aids: The external group that can help during a battle
         public enum Aids
         {
@@ -34,6 +36,26 @@ namespace CEBattle
             "Divin"
         };
 
+        // Aids Level: The level of exterior help
+        public enum AidsLevel
+        {
+            Minimal,
+            Small,
+            Moderate,
+            High,
+            Essential
+        }
+
+        static public string[] AidsLevelLbl =
+        {
+            "Minime",
+            "Bas",
+            "Modéré",
+            "Haut",
+            "Essentiel"
+        };
+
+        // General attitude
         public enum Attitude
         {
             Scared,
@@ -64,6 +86,11 @@ namespace CEBattle
         static public string EnumToString(Attitude a)
         {
             return AttitudeLbl[(int)a];
+        }
+
+        static public string EnumToString(AidsLevel a)
+        {
+            return AidsLevelLbl[(int)a];
         }
 
     }
