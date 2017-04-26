@@ -58,7 +58,10 @@ namespace CEBattle
             // Step 1, check if all the basis are fill (_battleName, _armyName1, _armyName2) ""
 
             // Step 2, deeper analysis, at least one: _generalCB1 and _generalCB2
-        
+            if (!_war.Validate())
+            {
+                _errorMsg.Text = "Veuillez inscrire des généraux au minimum";
+            }
             // Must validate they contains (call method validate)
 
         }
