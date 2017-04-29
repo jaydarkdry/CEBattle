@@ -69,7 +69,7 @@ namespace CEBattle
                     // -10% Nego
                     Stat.Moral = 1-0.2f;
                     Stat.Defense = 0.2f;
-                    Stat.ShowOff = -0.4f;
+                    Stat.ShowOff = 0f;
                     Stat.MoralLimit = 0.9f-0.1f;
                     Stat.Lost = -0.2f;
                     Stat.Attack = -0.1f;
@@ -87,7 +87,7 @@ namespace CEBattle
                     // 5% Nego power
                     Stat.Moral = 1-0.1f;
                     Stat.Defense = 0.1f;
-                    Stat.ShowOff = -0.2f;
+                    Stat.ShowOff = 0.2f;
                     Stat.MoralLimit = 0.9f-0.05f;
                     Stat.Lost = -0.1f;
                     Stat.Attack = -0.05f;
@@ -97,6 +97,13 @@ namespace CEBattle
                 case Config.Attitude.Neutral:
                     // Nothing
                     Stat.Behaviour = Config.EndBehaviour.Mercy;
+                    Stat.Moral = 1;
+                    Stat.Defense = 0;
+                    Stat.ShowOff = 0.5f;
+                    Stat.MoralLimit = 0.9f;
+                    Stat.Lost = 0;
+                    Stat.Attack = 0;
+                    Stat.NegoPower = 0;
                     break;
                 case Config.Attitude.Agressive:
                     // 10% morale
@@ -109,7 +116,7 @@ namespace CEBattle
                     // 5 % Nego power
                     Stat.Moral = 1+0.1f;
                     Stat.Defense = -0.1f;
-                    Stat.ShowOff = 0.2f;
+                    Stat.ShowOff = 0.7f;
                     Stat.MoralLimit = 0.9f+0.05f;
                     Stat.Lost = 0.1f;
                     Stat.Attack = 0.05f;
@@ -127,7 +134,7 @@ namespace CEBattle
                     // -10% Nego power
                     Stat.Moral = 1+0.2f;
                     Stat.Defense = -0.2f;
-                    Stat.ShowOff = 0.4f;
+                    Stat.ShowOff = 0.9f;
                     Stat.MoralLimit = 0.9f + 0.10f;
                     Stat.Lost = 0.2f;
                     Stat.Attack = 0.1f;

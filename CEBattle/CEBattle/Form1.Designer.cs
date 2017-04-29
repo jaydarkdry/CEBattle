@@ -498,6 +498,7 @@
             this._inegalityLevelTB.Size = new System.Drawing.Size(396, 45);
             this._inegalityLevelTB.TabIndex = 42;
             this._inegalityLevelTB.Value = 4;
+            this._inegalityLevelTB.Scroll += new System.EventHandler(this._inegalityLevelTB_Scroll);
             // 
             // label35
             // 
@@ -664,6 +665,7 @@
             this._aidDelBtn2.TabIndex = 86;
             this._aidDelBtn2.Text = "Enlever";
             this._aidDelBtn2.UseVisualStyleBackColor = true;
+            this._aidDelBtn2.Click += new System.EventHandler(this._aidDelBtn2_Click);
             // 
             // panel4
             // 
@@ -696,6 +698,7 @@
             this._aidMole2.TabIndex = 83;
             this._aidMole2.Text = "Taupe";
             this._aidMole2.UseVisualStyleBackColor = true;
+            this._aidMole2.CheckedChanged += new System.EventHandler(this._aidMole2_CheckedChanged);
             // 
             // _aidTypeCB2
             // 
@@ -710,6 +713,7 @@
             this._aidTypeCB2.Name = "_aidTypeCB2";
             this._aidTypeCB2.Size = new System.Drawing.Size(219, 21);
             this._aidTypeCB2.TabIndex = 64;
+            this._aidTypeCB2.SelectedIndexChanged += new System.EventHandler(this._aidTypeCB2_SelectedIndexChanged);
             // 
             // _aidName2
             // 
@@ -717,6 +721,7 @@
             this._aidName2.Name = "_aidName2";
             this._aidName2.Size = new System.Drawing.Size(181, 20);
             this._aidName2.TabIndex = 62;
+            this._aidName2.TextChanged += new System.EventHandler(this._aidName2_TextChanged);
             // 
             // label65
             // 
@@ -766,12 +771,11 @@
             // _aidLevelTB2
             // 
             this._aidLevelTB2.Location = new System.Drawing.Point(6, 81);
-            this._aidLevelTB2.Maximum = 5;
-            this._aidLevelTB2.Minimum = 1;
+            this._aidLevelTB2.Maximum = 4;
             this._aidLevelTB2.Name = "_aidLevelTB2";
             this._aidLevelTB2.Size = new System.Drawing.Size(309, 45);
             this._aidLevelTB2.TabIndex = 65;
-            this._aidLevelTB2.Value = 1;
+            this._aidLevelTB2.Scroll += new System.EventHandler(this._aidLevelTB2_Scroll);
             // 
             // label77
             // 
@@ -808,6 +812,7 @@
             this._aidAddBtn2.TabIndex = 85;
             this._aidAddBtn2.Text = "Ajouter";
             this._aidAddBtn2.UseVisualStyleBackColor = true;
+            this._aidAddBtn2.Click += new System.EventHandler(this._aidAddBtn2_Click);
             // 
             // _aidCB2
             // 
@@ -862,6 +867,7 @@
             this._aidMole1.TabIndex = 82;
             this._aidMole1.Text = "Taupe";
             this._aidMole1.UseVisualStyleBackColor = true;
+            this._aidMole1.CheckedChanged += new System.EventHandler(this._aidMole1_CheckedChanged);
             // 
             // _aidTypeCB1
             // 
@@ -876,6 +882,7 @@
             this._aidTypeCB1.Name = "_aidTypeCB1";
             this._aidTypeCB1.Size = new System.Drawing.Size(219, 21);
             this._aidTypeCB1.TabIndex = 64;
+            this._aidTypeCB1.SelectedIndexChanged += new System.EventHandler(this._aidTypeCB1_SelectedIndexChanged);
             // 
             // _aidName1
             // 
@@ -883,6 +890,7 @@
             this._aidName1.Name = "_aidName1";
             this._aidName1.Size = new System.Drawing.Size(199, 20);
             this._aidName1.TabIndex = 62;
+            this._aidName1.TextChanged += new System.EventHandler(this._aidName1_TextChanged);
             // 
             // label68
             // 
@@ -932,12 +940,11 @@
             // _aidLevelTB1
             // 
             this._aidLevelTB1.Location = new System.Drawing.Point(6, 81);
-            this._aidLevelTB1.Maximum = 5;
-            this._aidLevelTB1.Minimum = 1;
+            this._aidLevelTB1.Maximum = 4;
             this._aidLevelTB1.Name = "_aidLevelTB1";
             this._aidLevelTB1.Size = new System.Drawing.Size(309, 45);
             this._aidLevelTB1.TabIndex = 65;
-            this._aidLevelTB1.Value = 1;
+            this._aidLevelTB1.Scroll += new System.EventHandler(this._aidLevelTB1_Scroll);
             // 
             // label75
             // 
@@ -983,6 +990,7 @@
             this._aidDelBtn1.TabIndex = 84;
             this._aidDelBtn1.Text = "Enlever";
             this._aidDelBtn1.UseVisualStyleBackColor = true;
+            this._aidDelBtn1.Click += new System.EventHandler(this._aidDelBtn1_Click);
             // 
             // _aidAddBtn1
             // 
@@ -992,6 +1000,7 @@
             this._aidAddBtn1.TabIndex = 83;
             this._aidAddBtn1.Text = "Ajouter";
             this._aidAddBtn1.UseVisualStyleBackColor = true;
+            this._aidAddBtn1.Click += new System.EventHandler(this._aidAddBtn1_Click);
             // 
             // groupBox2
             // 
@@ -1014,6 +1023,7 @@
             this._delBtn2.TabIndex = 56;
             this._delBtn2.Text = "Enlever";
             this._delBtn2.UseVisualStyleBackColor = true;
+            this._delBtn2.Click += new System.EventHandler(this._delBtn2_Click);
             // 
             // _addBtn2
             // 
@@ -1023,6 +1033,7 @@
             this._addBtn2.TabIndex = 55;
             this._addBtn2.Text = "Ajouter";
             this._addBtn2.UseVisualStyleBackColor = true;
+            this._addBtn2.Click += new System.EventHandler(this._addBtn2_Click);
             // 
             // panel2
             // 
@@ -1065,6 +1076,7 @@
             this._saboteur2.TabIndex = 81;
             this._saboteur2.Text = "Saboteur";
             this._saboteur2.UseVisualStyleBackColor = true;
+            this._saboteur2.CheckedChanged += new System.EventHandler(this._saboteur2_CheckedChanged);
             // 
             // label51
             // 
@@ -1109,6 +1121,7 @@
             this._nbArmy2.Name = "_nbArmy2";
             this._nbArmy2.Size = new System.Drawing.Size(55, 20);
             this._nbArmy2.TabIndex = 75;
+            this._nbArmy2.TextChanged += new System.EventHandler(this._nbArmy2_TextChanged);
             // 
             // _nameGeneral2
             // 
@@ -1116,6 +1129,7 @@
             this._nameGeneral2.Name = "_nameGeneral2";
             this._nameGeneral2.Size = new System.Drawing.Size(181, 20);
             this._nameGeneral2.TabIndex = 62;
+            this._nameGeneral2.TextChanged += new System.EventHandler(this._nameGeneral2_TextChanged);
             // 
             // label52
             // 
@@ -1183,12 +1197,11 @@
             // _leaderStatTB2
             // 
             this._leaderStatTB2.Location = new System.Drawing.Point(6, 81);
-            this._leaderStatTB2.Maximum = 5;
-            this._leaderStatTB2.Minimum = 1;
+            this._leaderStatTB2.Maximum = 4;
             this._leaderStatTB2.Name = "_leaderStatTB2";
             this._leaderStatTB2.Size = new System.Drawing.Size(309, 45);
             this._leaderStatTB2.TabIndex = 65;
-            this._leaderStatTB2.Value = 1;
+            this._leaderStatTB2.Scroll += new System.EventHandler(this._leaderStatTB2_Scroll);
             // 
             // label59
             // 
@@ -1307,6 +1320,7 @@
             this._saboteur1.TabIndex = 81;
             this._saboteur1.Text = "Saboteur";
             this._saboteur1.UseVisualStyleBackColor = true;
+            this._saboteur1.CheckedChanged += new System.EventHandler(this._saboteur1_CheckedChanged);
             // 
             // label50
             // 
@@ -1351,6 +1365,7 @@
             this._nbArmy1.Name = "_nbArmy1";
             this._nbArmy1.Size = new System.Drawing.Size(55, 20);
             this._nbArmy1.TabIndex = 75;
+            this._nbArmy1.TextChanged += new System.EventHandler(this._nbArmy1_TextChanged);
             // 
             // _nameGeneral1
             // 
@@ -1358,6 +1373,7 @@
             this._nameGeneral1.Name = "_nameGeneral1";
             this._nameGeneral1.Size = new System.Drawing.Size(181, 20);
             this._nameGeneral1.TabIndex = 62;
+            this._nameGeneral1.TextChanged += new System.EventHandler(this._nameGeneral1_TextChanged);
             // 
             // label49
             // 
@@ -1425,12 +1441,11 @@
             // _leaderStatTB1
             // 
             this._leaderStatTB1.Location = new System.Drawing.Point(6, 81);
-            this._leaderStatTB1.Maximum = 5;
-            this._leaderStatTB1.Minimum = 1;
+            this._leaderStatTB1.Maximum = 4;
             this._leaderStatTB1.Name = "_leaderStatTB1";
             this._leaderStatTB1.Size = new System.Drawing.Size(309, 45);
             this._leaderStatTB1.TabIndex = 65;
-            this._leaderStatTB1.Value = 1;
+            this._leaderStatTB1.Scroll += new System.EventHandler(this._leaderStatTB1_Scroll);
             // 
             // label42
             // 
@@ -1458,6 +1473,7 @@
             this._addBtn1.TabIndex = 53;
             this._addBtn1.Text = "Ajouter";
             this._addBtn1.UseVisualStyleBackColor = true;
+            this._addBtn1.Click += new System.EventHandler(this._addBtn1_Click);
             // 
             // _delBtn1
             // 
@@ -1467,6 +1483,7 @@
             this._delBtn1.TabIndex = 54;
             this._delBtn1.Text = "Enlever";
             this._delBtn1.UseVisualStyleBackColor = true;
+            this._delBtn1.Click += new System.EventHandler(this._delBtn1_Click);
             // 
             // label22
             // 

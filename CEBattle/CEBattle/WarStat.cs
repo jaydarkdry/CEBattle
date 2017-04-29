@@ -17,8 +17,7 @@ namespace CEBattle
 
         public override string ToString()
         {
-            string retValue = base.ToString();
-            retValue += "Balance du combat: " + Chance + "\n";
+            string retValue = "Balance du combat: " + Chance + "\n";
             return retValue;
         }
 

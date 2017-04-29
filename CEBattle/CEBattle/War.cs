@@ -144,6 +144,147 @@ namespace CEBattle
             _stat.Chance = InegalityRatio;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="side">false = side1 and side2 otherwise.</param>
+        /// <param name="name"></param>
+        /// <param name="nbarmy"></param>
+        /// <param name="saboteur"></param>
+        /// <param name="att"></param>
+        /// <param name="armies"></param>
+        /// <returns></returns>
+        public General AddGeneral(bool side, string name, int nbarmy, bool saboteur, 
+            Config.Attitude att, float[] armies)
+        {
+            General g = new General(name, nbarmy, saboteur, att, armies);
+            if (!side)
+            {
+                if (_general1 == null)
+                {
+                    _general1 = new List<General>();
+                }
+                _general1.Add(g);
+            }
+            else
+            {
+                if (_general2 == null)
+                {
+                    _general2 = new List<General>();
+                }
+                _general2.Add(g);
+            }
+            return g;
+        }
+
+        public AddOn AddAddOn(bool side, string name, bool mole, Config.Aids aid, 
+            Config.AidsLevel aidsLevel)
+        {
+            AddOn add = new AddOn(name, mole, aid, aidsLevel);
+            if (!side)
+            {
+                if (_addOn1 == null)
+                {
+                    _addOn1 = new List<AddOn>();
+                }
+                _addOn1.Add(add);
+            }
+            else
+            {
+                if (_addOn2 == null)
+                {
+                    _addOn2 = new List<AddOn>();
+                }
+                _addOn2.Add(add);
+            }
+            return add;
+        }
+
+        public General GetGeneral(bool side, int i)
+        {
+            try {
+                if (!side)
+                {
+                    return _general1[i];
+                }
+                else
+                {
+                    return _general2[i];
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public AddOn getAddOn(bool side, int i)
+        {
+            try
+            {
+                if (!side)
+                {
+                    return _addOn1[i];
+                }
+                else
+                {
+                    return _addOn2[i];
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public List<General> GetGenerals(bool side)
+        {
+            if (!side)
+            {
+                return _general1;
+            }
+            else
+            {
+                return _general2;
+            }
+        }
+
+        public List<AddOn> GetAddOns(bool side)
+        {
+            if (!side)
+            {
+                return _addOn1;
+            }
+            else
+            {
+                return _addOn2;
+            }
+        }
+
+        public void RemoveGeneral(bool side, int i)
+        {
+            if (!side)
+            {
+                _general1.RemoveAt(i);
+            }
+            else
+            {
+                _general2.RemoveAt(i);
+            }
+        }
+
+        public void RemoveAddOn(bool side, int i)
+        {
+            if (!side)
+            {
+                _addOn1.RemoveAt(i);
+            }
+            else
+            {
+                _addOn2.RemoveAt(i);
+            }
+        }
+
         public override string ToString()
         {
             string retValue = "";

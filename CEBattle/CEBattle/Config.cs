@@ -158,6 +158,7 @@ namespace CEBattle
 
 
         static public int UnitType = 4;
+        static public string NewName = "Nom";
 
 
         // Enum to String section

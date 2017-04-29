@@ -67,7 +67,12 @@ namespace CEBattle
                 percent *= -1;
             }
 
-            switch(Aid)
+            Stat.Defense = 0;
+            Stat.Moral = 0;
+            Stat.MoralLimit = 1;
+            Stat.Lost = 0;
+            Stat.Attack = 0;
+            switch (Aid)
             {
                 case Config.Aids.Attack:
                     Stat.Attack = percent;

@@ -24,7 +24,7 @@ namespace CEBattle
         {
             string retvalue = base.ToString();
             retvalue += "Orgueil: " + ShowOff + "\n";
-            retvalue += "Comportement: " + Config.EnumToString(Behaviour) + "\n";
+            retvalue += "Comportement envers les otages: " + Config.EnumToString(Behaviour) + "\n";
             retvalue += "Pouvoir de négociation: " + NegoPower + "\n";
 
             return retvalue;

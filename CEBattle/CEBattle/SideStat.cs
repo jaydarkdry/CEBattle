@@ -16,7 +16,10 @@ namespace CEBattle
 
         public override string ToString()
         {
-            return base.ToString();
+            string retValue = "Morale: " + Moral + "\n";
+            retValue += "Limite morale: " + MoralLimit + "\n";
+            retValue += "Défense: " + Defense + "\n";
+            return retValue;
         }
 
     }
