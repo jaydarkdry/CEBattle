@@ -176,6 +176,7 @@
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this._techniqueTxt = new System.Windows.Forms.Label();
             this.label85 = new System.Windows.Forms.Label();
+            this._showStat = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this._fortificationLevelTB1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._fortificationLevelTB2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._exhaustionLevelTB1)).BeginInit();
@@ -217,6 +218,7 @@
             this._battleName.Name = "_battleName";
             this._battleName.Size = new System.Drawing.Size(208, 20);
             this._battleName.TabIndex = 1;
+            this._battleName.TextChanged += new System.EventHandler(this._battleName_TextChanged);
             // 
             // label2
             // 
@@ -243,6 +245,7 @@
             this._armyName1.Name = "_armyName1";
             this._armyName1.Size = new System.Drawing.Size(208, 20);
             this._armyName1.TabIndex = 4;
+            this._armyName1.TextChanged += new System.EventHandler(this._armyName1_TextChanged);
             // 
             // _armyName2
             // 
@@ -250,6 +253,7 @@
             this._armyName2.Name = "_armyName2";
             this._armyName2.Size = new System.Drawing.Size(208, 20);
             this._armyName2.TabIndex = 6;
+            this._armyName2.TextChanged += new System.EventHandler(this._armyName2_TextChanged);
             // 
             // label4
             // 
@@ -272,12 +276,11 @@
             // _fortificationLevelTB1
             // 
             this._fortificationLevelTB1.Location = new System.Drawing.Point(15, 528);
-            this._fortificationLevelTB1.Maximum = 5;
-            this._fortificationLevelTB1.Minimum = 1;
+            this._fortificationLevelTB1.Maximum = 4;
             this._fortificationLevelTB1.Name = "_fortificationLevelTB1";
             this._fortificationLevelTB1.Size = new System.Drawing.Size(396, 45);
             this._fortificationLevelTB1.TabIndex = 13;
-            this._fortificationLevelTB1.Value = 1;
+            this._fortificationLevelTB1.Scroll += new System.EventHandler(this._fortificationLevelTB1_Scroll);
             // 
             // label10
             // 
@@ -345,12 +348,11 @@
             // _fortificationLevelTB2
             // 
             this._fortificationLevelTB2.Location = new System.Drawing.Point(476, 528);
-            this._fortificationLevelTB2.Maximum = 5;
-            this._fortificationLevelTB2.Minimum = 1;
+            this._fortificationLevelTB2.Maximum = 4;
             this._fortificationLevelTB2.Name = "_fortificationLevelTB2";
             this._fortificationLevelTB2.Size = new System.Drawing.Size(396, 45);
             this._fortificationLevelTB2.TabIndex = 21;
-            this._fortificationLevelTB2.Value = 1;
+            this._fortificationLevelTB2.Scroll += new System.EventHandler(this._fortificationLevelTB2_Scroll);
             // 
             // label17
             // 
@@ -364,12 +366,11 @@
             // _exhaustionLevelTB1
             // 
             this._exhaustionLevelTB1.Location = new System.Drawing.Point(15, 609);
-            this._exhaustionLevelTB1.Maximum = 5;
-            this._exhaustionLevelTB1.Minimum = 1;
+            this._exhaustionLevelTB1.Maximum = 4;
             this._exhaustionLevelTB1.Name = "_exhaustionLevelTB1";
             this._exhaustionLevelTB1.Size = new System.Drawing.Size(396, 45);
             this._exhaustionLevelTB1.TabIndex = 28;
-            this._exhaustionLevelTB1.Value = 1;
+            this._exhaustionLevelTB1.Scroll += new System.EventHandler(this._exhaustionLevelTB1_Scroll);
             // 
             // label23
             // 
@@ -428,12 +429,11 @@
             // _exhaustionLevelTB2
             // 
             this._exhaustionLevelTB2.Location = new System.Drawing.Point(479, 609);
-            this._exhaustionLevelTB2.Maximum = 5;
-            this._exhaustionLevelTB2.Minimum = 1;
+            this._exhaustionLevelTB2.Maximum = 4;
             this._exhaustionLevelTB2.Name = "_exhaustionLevelTB2";
             this._exhaustionLevelTB2.Size = new System.Drawing.Size(396, 45);
             this._exhaustionLevelTB2.TabIndex = 35;
-            this._exhaustionLevelTB2.Value = 1;
+            this._exhaustionLevelTB2.Scroll += new System.EventHandler(this._exhaustionLevelTB2_Scroll);
             // 
             // label29
             // 
@@ -576,6 +576,7 @@
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage1.Controls.Add(this._showStat);
             this.tabPage1.Controls.Add(this._errorMsg);
             this.tabPage1.Controls.Add(this.groupBox4);
             this.tabPage1.Controls.Add(this.groupBox3);
@@ -825,7 +826,7 @@
             this.groupBox3.Controls.Add(this._aidAddBtn1);
             this.groupBox3.Location = new System.Drawing.Point(20, 357);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(380, 142);
+            this.groupBox3.Size = new System.Drawing.Size(422, 142);
             this.groupBox3.TabIndex = 65;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Aide Extérieures";
@@ -880,7 +881,7 @@
             // 
             this._aidName1.Location = new System.Drawing.Point(41, 5);
             this._aidName1.Name = "_aidName1";
-            this._aidName1.Size = new System.Drawing.Size(181, 20);
+            this._aidName1.Size = new System.Drawing.Size(199, 20);
             this._aidName1.TabIndex = 62;
             // 
             // label68
@@ -1675,6 +1676,16 @@
             this.label85.TabIndex = 2;
             this.label85.Text = "Journal de bataille:";
             // 
+            // _showStat
+            // 
+            this._showStat.Location = new System.Drawing.Point(911, 751);
+            this._showStat.Name = "_showStat";
+            this._showStat.Size = new System.Drawing.Size(75, 23);
+            this._showStat.TabIndex = 68;
+            this._showStat.Text = "ShowStat";
+            this._showStat.UseVisualStyleBackColor = true;
+            this._showStat.Click += new System.EventHandler(this._showStat_Click);
+            // 
             // unitTactic1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1870,6 +1881,7 @@
         private System.Windows.Forms.Label _errorMsg;
         private System.Windows.Forms.CheckBox _aidMole1;
         private System.Windows.Forms.CheckBox _aidMole2;
+        private System.Windows.Forms.Button _showStat;
     }
 }
 

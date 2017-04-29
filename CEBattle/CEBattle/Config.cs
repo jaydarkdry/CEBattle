@@ -115,7 +115,47 @@ namespace CEBattle
             "Limite"
 
         };
+
         
+        public enum EndBehaviour
+        {
+            None,
+            Mercy,
+            Hostage,
+            Carnage
+
+        }
+
+        static public string[] EndBehaviourLbl =
+        {
+            "Aucun",
+            "Grâce",
+            "Otage",
+            "Massacre"
+
+        };
+
+        public enum Time
+        {
+            Never,
+            Start,
+            AllBattle,
+            WhenNeeded,
+            End,
+            DecisionMaking
+        }
+
+        static public string[] TimeLbl =
+        {
+            "Jamais",
+            "Commencement",
+            "En tout temps",
+            "Au besoin",
+            "Fin",
+            "Décision"
+
+        };
+
 
         static public int UnitType = 4;
 
@@ -144,6 +184,16 @@ namespace CEBattle
         static public string EnumToString(Fatigue a)
         {
             return FatigueLbl[(int)a];
+        }
+
+        static public string EnumToString(EndBehaviour a)
+        {
+            return EndBehaviourLbl[(int)a];
+        }
+
+        static public string EnumToString(Time a)
+        {
+            return TimeLbl[(int)a];
         }
 
     }

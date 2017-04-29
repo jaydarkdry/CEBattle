@@ -55,8 +55,13 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="General.cs" />
+    <Compile Include="AddOnStat.cs" />
+    <Compile Include="WarStat.cs" />
+    <Compile Include="SideStat.cs" />
+    <Compile Include="GeneralStat.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Stat.cs" />
     <Compile Include="War.cs" />
     <Compile Include="WarMath.cs" />
     <EmbeddedResource Include="Form1.resx">

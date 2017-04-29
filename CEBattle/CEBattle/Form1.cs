@@ -29,9 +29,17 @@ namespace CEBattle
 
             _war = new War();
 
+            _war.For1 = (Config.Fortification)_fortificationLevelTB1.Value;
+            _war.For2 = (Config.Fortification)_fortificationLevelTB2.Value;
+            _war.Fat1 = (Config.Fatigue)_exhaustionLevelTB1.Value;
+            _war.Fat2 = (Config.Fatigue)_exhaustionLevelTB2.Value;
+
+            _war.ComputeStat();
+            
+
             //UniTests
-            int a = WarMath.ResultBalance(500,123);
-            Console.WriteLine("Mon chiffre est " + a);
+            /*int a = WarMath.ResultBalance(500,123);
+            Console.WriteLine("Mon chiffre est " + a);*/
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -84,6 +92,50 @@ namespace CEBattle
         private void _generalCB2_SelectedIndexChanged(object sender, EventArgs e)
         {
             // Load a general by index
+        }
+
+        private void _showStat_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine(_war.ToString());// Show stat
+        }
+
+        private void _battleName_TextChanged(object sender, EventArgs e)
+        {
+            _war.BattleName = _battleName.Text;
+        }
+
+        private void _armyName1_TextChanged(object sender, EventArgs e)
+        {
+            _war.Side1Name = _armyName1.Text;
+        }
+
+        private void _armyName2_TextChanged(object sender, EventArgs e)
+        {
+            _war.Side2Name = _armyName2.Text;
+        }
+
+        private void _fortificationLevelTB1_Scroll(object sender, EventArgs e)
+        {
+            _war.For1 = (Config.Fortification)_fortificationLevelTB1.Value;
+            _war.ComputeStat();
+        }
+
+        private void _fortificationLevelTB2_Scroll(object sender, EventArgs e)
+        {
+            _war.For2 = (Config.Fortification)_fortificationLevelTB2.Value;
+            _war.ComputeStat();
+        }
+
+        private void _exhaustionLevelTB1_Scroll(object sender, EventArgs e)
+        {
+            _war.Fat1 = (Config.Fatigue)_exhaustionLevelTB1.Value;
+            _war.ComputeStat();
+        }
+
+        private void _exhaustionLevelTB2_Scroll(object sender, EventArgs e)
+        {
+            _war.Fat2 = (Config.Fatigue)_exhaustionLevelTB2.Value;
+            _war.ComputeStat();
         }
     }
 }
