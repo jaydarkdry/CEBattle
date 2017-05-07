@@ -153,7 +153,6 @@ namespace CEBattle
             "Au besoin",
             "Fin",
             "Décision"
-
         };
 
 

@@ -65,14 +65,17 @@ namespace CEBattle
             if (_battleName.Text == "")
             {
                 _errorMsg.Text = "Veuillez inscire le nom de la bataille";
+                return;
             }
             if (_armyName1.Text == "")
             {
                 _errorMsg.Text = "Veuillez inscrire le nom de la première armée";
+                return;
             }
             if (_armyName2.Text == "")
             {
                 _errorMsg.Text = "Veuillez inscrire le nom de la deuxième armée";
+                return;
             }
             // Step 1, check if all the basis are fill (_battleName, _armyName1, _armyName2) ""
 
@@ -80,8 +83,23 @@ namespace CEBattle
             if (!_war.Validate())
             {
                 _errorMsg.Text = "Veuillez inscrire des généraux au minimum";
+                return;
             }
             // Must validate they contains (call method validate)
+
+            // Multiple skirmish normally
+            Report r = _war.Skirmish();
+            _mainTab.SelectedIndex = 1;
+            _reportTab.SelectedIndex = 2;
+            _technicalTxt.Text = "";
+            string[] text = r.ToTechnical().Split('\n');
+            for (int i=0; i< text.Length; i++)
+            {
+                _technicalTxt.AppendText(text[i]);
+                _technicalTxt.AppendText(Environment.NewLine);
+            }
+
+
 
         }
 

@@ -20,7 +20,7 @@ namespace CEBattle
         public AddOnStat Stat;
 
         // Flag
-        private bool _used = false;
+        public bool Used = false;
         
 
         public AddOn(string name, bool mole, Config.Aids aid, Config.AidsLevel aidsLevel)
@@ -39,6 +39,48 @@ namespace CEBattle
             Aid = Config.Aids.Defense;
             AidsLevel = Config.AidsLevel.Minimal;
             Stat = new AddOnStat();
+        }
+
+        public int GetCombatImplication(int force)
+        {
+            if (Used)
+                return 0;
+            float value = (float)force * Stat.Attack;
+            if (Stat.Time != Config.Time.AllBattle)
+                Used = true;
+            return (int)value;
+        }
+
+        public bool IsOrder()
+        {
+            switch(Stat.Time)
+            {
+                case Config.Time.AllBattle:
+                case Config.Time.Start:
+                case Config.Time.End:
+                case Config.Time.DecisionMaking:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        public bool IsOrderWhen(Config.Time t)
+        {
+            if (t == Stat.Time  || Stat.Time == Config.Time.AllBattle)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool CanUseAttack()
+        {
+            if (Stat.Time == Config.Time.WhenNeeded && !Used && Stat.Attack != 0)
+            {
+                return true;
+            }
+            return false;
         }
 
         public void ComputeStat()
@@ -95,6 +137,7 @@ namespace CEBattle
                 case Config.Aids.Healing:
                     Stat.Lost = -percent / 2;
                     Stat.MoralLimit = 1 - (percent / 2);
+                    Stat.Time = Config.Time.WhenNeeded;
                     break;
                 case Config.Aids.Moral:
                     Stat.Moral = 1 - percent;

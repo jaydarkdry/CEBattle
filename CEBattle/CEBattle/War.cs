@@ -34,6 +34,10 @@ namespace CEBattle
         private SideStat _stat2;
         private WarStat _stat;
 
+        // Step
+        private int _round = 0;
+        private Config.Time _time = Config.Time.Start;
+
         // Empty constructor
         public War()
         {
@@ -283,6 +287,38 @@ namespace CEBattle
             {
                 _addOn2.RemoveAt(i);
             }
+        }
+
+        /// <summary>
+        /// A skirmish
+        /// </summary>
+        /// <returns></returns>
+        public Report Skirmish()
+        {
+            Report r = new Report();
+
+            r.Setup(_general1, _general2, _addOn1, _addOn2, Side1Name, Side2Name, BattleName, _round, _time);
+
+            // Base strenght
+            r.Phase1();
+            // Add on
+            r.Phase2();
+            // Saboteur
+            /*
+            
+            */
+            // Phase 3
+            // Saboteur phase
+
+            // Phase 4
+            // Get winning team, calculated ratio of implication and determine loss
+
+            // Phase 5
+            // Defense and lost apply
+
+            // Phase 6
+            // Morale issue
+            return r;
         }
 
         public override string ToString()

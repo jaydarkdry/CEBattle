@@ -56,6 +56,8 @@
     </Compile>
     <Compile Include="General.cs" />
     <Compile Include="AddOnStat.cs" />
+    <Compile Include="Implication.cs" />
+    <Compile Include="Report.cs" />
     <Compile Include="WarStat.cs" />
     <Compile Include="SideStat.cs" />
     <Compile Include="GeneralStat.cs" />

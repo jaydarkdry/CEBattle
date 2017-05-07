@@ -24,6 +24,7 @@ namespace CEBattle
         // Flag
         private bool _defeated = false;
         private bool _hostage = false;
+        private bool _generalDead = false;
         
         // Empty constructor, need to be populate later
         public General(string name, int nbarmy, bool saboteur, Config.Attitude att, float[] armies )
@@ -51,12 +52,34 @@ namespace CEBattle
             Stat = new GeneralStat();
         }
 
+        public Implication GetImplication()
+        {
+            if (Saboteur)
+            {
+                return null;
+            }
+            else
+            {
+                return new Implication(this.NbArmy, this.Stat.Attack);
+            }
+        }
+
         /// <summary>
         ///  Compute the base stats
         /// </summary>
         public void ComputeStat()
         {
-            switch(Att)
+            // Start value
+            Stat.Moral = 0.9f;
+            Stat.Defense = 0f;
+            Stat.ShowOff = 0.5f;
+            Stat.MoralLimit = 0.9f;
+            Stat.Lost = 0;
+            Stat.Attack = 0;
+            Stat.Behaviour = Config.EndBehaviour.None;
+            Stat.NegoPower = 0;
+
+            switch (Att)
             {
                 case Config.Attitude.Scared:
                     // -20% morale
@@ -67,14 +90,14 @@ namespace CEBattle
                     // -10% attack
                     // Behaviour none
                     // -10% Nego
-                    Stat.Moral = 1-0.2f;
-                    Stat.Defense = 0.2f;
-                    Stat.ShowOff = 0f;
-                    Stat.MoralLimit = 0.9f-0.1f;
-                    Stat.Lost = -0.2f;
-                    Stat.Attack = -0.1f;
+                    Stat.Moral -= 0.2f;
+                    Stat.Defense += 0.2f;
+                    Stat.ShowOff -= 0.4f;
+                    Stat.MoralLimit -= 0.1f;
+                    Stat.Lost -= 0.2f;
+                    Stat.Attack -= 0.1f;
                     Stat.Behaviour = Config.EndBehaviour.None;
-                    Stat.NegoPower = -0.1f;
+                    Stat.NegoPower -= 0.1f;
                     break;
                 case Config.Attitude.Passif:
                     // -10% morale
@@ -85,25 +108,18 @@ namespace CEBattle
                     // -5% attack
                     // Behaviour Mercy
                     // 5% Nego power
-                    Stat.Moral = 1-0.1f;
-                    Stat.Defense = 0.1f;
-                    Stat.ShowOff = 0.2f;
-                    Stat.MoralLimit = 0.9f-0.05f;
-                    Stat.Lost = -0.1f;
-                    Stat.Attack = -0.05f;
+                    Stat.Moral -= 0.1f;
+                    Stat.Defense += 0.1f;
+                    Stat.ShowOff -= 0.2f;
+                    Stat.MoralLimit -= 0.05f;
+                    Stat.Lost -= 0.1f;
+                    Stat.Attack -= 0.05f;
                     Stat.Behaviour = Config.EndBehaviour.Mercy;
-                    Stat.NegoPower = 0.05f;
+                    Stat.NegoPower += 0.05f;
                     break;
                 case Config.Attitude.Neutral:
                     // Nothing
                     Stat.Behaviour = Config.EndBehaviour.Mercy;
-                    Stat.Moral = 1;
-                    Stat.Defense = 0;
-                    Stat.ShowOff = 0.5f;
-                    Stat.MoralLimit = 0.9f;
-                    Stat.Lost = 0;
-                    Stat.Attack = 0;
-                    Stat.NegoPower = 0;
                     break;
                 case Config.Attitude.Agressive:
                     // 10% morale
@@ -114,14 +130,14 @@ namespace CEBattle
                     // 5% attack
                     // Behaviour: taking hostage
                     // 5 % Nego power
-                    Stat.Moral = 1+0.1f;
-                    Stat.Defense = -0.1f;
-                    Stat.ShowOff = 0.7f;
-                    Stat.MoralLimit = 0.9f+0.05f;
-                    Stat.Lost = 0.1f;
-                    Stat.Attack = 0.05f;
+                    Stat.Moral += 0.1f;
+                    Stat.Defense -= 0.1f;
+                    Stat.ShowOff += 0.2f;
+                    Stat.MoralLimit += 0.05f;
+                    Stat.Lost += 0.1f;
+                    Stat.Attack += 0.05f;
                     Stat.Behaviour = Config.EndBehaviour.Hostage;
-                    Stat.NegoPower = 0.05f;
+                    Stat.NegoPower += 0.05f;
                     break;
                 case Config.Attitude.Suicide:
                     // 20% morale
@@ -132,17 +148,19 @@ namespace CEBattle
                     // 10% attack
                     // Behaviour: carnage
                     // -10% Nego power
-                    Stat.Moral = 1+0.2f;
-                    Stat.Defense = -0.2f;
-                    Stat.ShowOff = 0.9f;
-                    Stat.MoralLimit = 0.9f + 0.10f;
-                    Stat.Lost = 0.2f;
-                    Stat.Attack = 0.1f;
+                    Stat.Moral += 0.2f;
+                    Stat.Defense -= 0.2f;
+                    Stat.ShowOff += 0.9f;
+                    Stat.MoralLimit += 0.10f;
+                    Stat.Lost += 0.2f;
+                    Stat.Attack += 0.1f;
                     Stat.Behaviour = Config.EndBehaviour.Carnage;
-                    Stat.NegoPower = -0.1f;
+                    Stat.NegoPower -= 0.1f;
                     break;
             }
         }
+
+        
         
         public Boolean Validate()
         {

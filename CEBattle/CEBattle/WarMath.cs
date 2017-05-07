@@ -11,6 +11,7 @@ namespace CEBattle
     /// </summary>
     class WarMath
     {
+        static Random R = new Random();
         /// <summary>
         /// Return the balance of the battle or the odd of success.
         /// </summary>
@@ -31,8 +32,7 @@ namespace CEBattle
             // 400 (300+100)-350 = 50
             // Side 2 so 50 and not -50
             // It means that the first skirmish was not that tight and the loss on side1 is pretty significative, at least 50 units on side one will be lost (Apply bonus later)
-            Random r = new Random();
-            float value = (float)r.NextDouble();
+            float value = (float)R.NextDouble();
             int caught = (int)(value * (side1 + side2));
             int fightResult = ((side1 + side2) - caught);
            
@@ -46,6 +46,13 @@ namespace CEBattle
                 return -(side1 - caught);
             }
 
+        }
+
+        public static int ResultPower(int nbArmy)
+        {
+            float value = (float)R.NextDouble();
+            value = nbArmy * value;
+            return (int)(value) + 1;
         }
 
     }

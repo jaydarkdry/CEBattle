@@ -68,8 +68,9 @@
             this.label38 = new System.Windows.Forms.Label();
             this.label39 = new System.Windows.Forms.Label();
             this.label40 = new System.Windows.Forms.Label();
-            this.tabControl = new System.Windows.Forms.TabControl();
+            this._mainTab = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this._showStat = new System.Windows.Forms.Button();
             this._errorMsg = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this._aidDelBtn2 = new System.Windows.Forms.Button();
@@ -166,23 +167,23 @@
             this.label9 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this._exportBtn = new System.Windows.Forms.Button();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this._reportTab = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this._essentialTxt = new System.Windows.Forms.Label();
             this.label81 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this._detailTxt = new System.Windows.Forms.Label();
             this.label84 = new System.Windows.Forms.Label();
             this.tabPage5 = new System.Windows.Forms.TabPage();
-            this._techniqueTxt = new System.Windows.Forms.Label();
             this.label85 = new System.Windows.Forms.Label();
-            this._showStat = new System.Windows.Forms.Button();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this._technicalTxt = new System.Windows.Forms.TextBox();
+            this._detailedTxt = new System.Windows.Forms.TextBox();
+            this._essentialTxt = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this._fortificationLevelTB1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._fortificationLevelTB2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._exhaustionLevelTB1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._exhaustionLevelTB2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._inegalityLevelTB)).BeginInit();
-            this.tabControl.SuspendLayout();
+            this._mainTab.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -197,10 +198,11 @@
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._leaderStatTB1)).BeginInit();
             this.tabPage2.SuspendLayout();
-            this.tabControl1.SuspendLayout();
+            this._reportTab.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.tabPage5.SuspendLayout();
+            this.panel5.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -564,15 +566,15 @@
             this.label40.TabIndex = 4;
             this.label40.Text = "Nombre d\'armée:";
             // 
-            // tabControl
+            // _mainTab
             // 
-            this.tabControl.Controls.Add(this.tabPage1);
-            this.tabControl.Controls.Add(this.tabPage2);
-            this.tabControl.Location = new System.Drawing.Point(12, 12);
-            this.tabControl.Name = "tabControl";
-            this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(1009, 817);
-            this.tabControl.TabIndex = 52;
+            this._mainTab.Controls.Add(this.tabPage1);
+            this._mainTab.Controls.Add(this.tabPage2);
+            this._mainTab.Location = new System.Drawing.Point(18, 35);
+            this._mainTab.Name = "_mainTab";
+            this._mainTab.SelectedIndex = 0;
+            this._mainTab.Size = new System.Drawing.Size(1009, 817);
+            this._mainTab.TabIndex = 52;
             // 
             // tabPage1
             // 
@@ -634,6 +636,16 @@
             this.tabPage1.Size = new System.Drawing.Size(1001, 791);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Paramètres";
+            // 
+            // _showStat
+            // 
+            this._showStat.Location = new System.Drawing.Point(826, 738);
+            this._showStat.Name = "_showStat";
+            this._showStat.Size = new System.Drawing.Size(75, 23);
+            this._showStat.TabIndex = 68;
+            this._showStat.Text = "ShowStat";
+            this._showStat.UseVisualStyleBackColor = true;
+            this._showStat.Click += new System.EventHandler(this._showStat_Click);
             // 
             // _errorMsg
             // 
@@ -1578,7 +1590,7 @@
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this._exportBtn);
-            this.tabPage2.Controls.Add(this.tabControl1);
+            this.tabPage2.Controls.Add(this._reportTab);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -1596,16 +1608,16 @@
             this._exportBtn.Text = "Exporter";
             this._exportBtn.UseVisualStyleBackColor = true;
             // 
-            // tabControl1
+            // _reportTab
             // 
-            this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Controls.Add(this.tabPage4);
-            this.tabControl1.Controls.Add(this.tabPage5);
-            this.tabControl1.Location = new System.Drawing.Point(6, 6);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(991, 740);
-            this.tabControl1.TabIndex = 0;
+            this._reportTab.Controls.Add(this.tabPage3);
+            this._reportTab.Controls.Add(this.tabPage4);
+            this._reportTab.Controls.Add(this.tabPage5);
+            this._reportTab.Location = new System.Drawing.Point(6, 6);
+            this._reportTab.Name = "_reportTab";
+            this._reportTab.SelectedIndex = 0;
+            this._reportTab.Size = new System.Drawing.Size(991, 740);
+            this._reportTab.TabIndex = 0;
             // 
             // tabPage3
             // 
@@ -1619,13 +1631,6 @@
             this.tabPage3.Text = "Essentiel";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // _essentialTxt
-            // 
-            this._essentialTxt.Location = new System.Drawing.Point(6, 57);
-            this._essentialTxt.Name = "_essentialTxt";
-            this._essentialTxt.Size = new System.Drawing.Size(971, 643);
-            this._essentialTxt.TabIndex = 1;
-            // 
             // label81
             // 
             this.label81.AutoSize = true;
@@ -1638,7 +1643,7 @@
             // 
             // tabPage4
             // 
-            this.tabPage4.Controls.Add(this._detailTxt);
+            this.tabPage4.Controls.Add(this._detailedTxt);
             this.tabPage4.Controls.Add(this.label84);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
@@ -1647,13 +1652,6 @@
             this.tabPage4.TabIndex = 1;
             this.tabPage4.Text = "Détaillé";
             this.tabPage4.UseVisualStyleBackColor = true;
-            // 
-            // _detailTxt
-            // 
-            this._detailTxt.Location = new System.Drawing.Point(6, 57);
-            this._detailTxt.Name = "_detailTxt";
-            this._detailTxt.Size = new System.Drawing.Size(971, 643);
-            this._detailTxt.TabIndex = 3;
             // 
             // label84
             // 
@@ -1667,7 +1665,7 @@
             // 
             // tabPage5
             // 
-            this.tabPage5.Controls.Add(this._techniqueTxt);
+            this.tabPage5.Controls.Add(this._technicalTxt);
             this.tabPage5.Controls.Add(this.label85);
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
@@ -1675,13 +1673,6 @@
             this.tabPage5.TabIndex = 2;
             this.tabPage5.Text = "Technique";
             this.tabPage5.UseVisualStyleBackColor = true;
-            // 
-            // _techniqueTxt
-            // 
-            this._techniqueTxt.Location = new System.Drawing.Point(6, 57);
-            this._techniqueTxt.Name = "_techniqueTxt";
-            this._techniqueTxt.Size = new System.Drawing.Size(971, 643);
-            this._techniqueTxt.TabIndex = 3;
             // 
             // label85
             // 
@@ -1693,22 +1684,58 @@
             this.label85.TabIndex = 2;
             this.label85.Text = "Journal de bataille:";
             // 
-            // _showStat
+            // panel5
             // 
-            this._showStat.Location = new System.Drawing.Point(911, 751);
-            this._showStat.Name = "_showStat";
-            this._showStat.Size = new System.Drawing.Size(75, 23);
-            this._showStat.TabIndex = 68;
-            this._showStat.Text = "ShowStat";
-            this._showStat.UseVisualStyleBackColor = true;
-            this._showStat.Click += new System.EventHandler(this._showStat_Click);
+            this.panel5.AutoScroll = true;
+            this.panel5.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panel5.Controls.Add(this._mainTab);
+            this.panel5.Location = new System.Drawing.Point(1, 12);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(1019, 582);
+            this.panel5.TabIndex = 53;
+            // 
+            // _technicalTxt
+            // 
+            this._technicalTxt.BackColor = this.BackColor;
+            this._technicalTxt.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this._technicalTxt.Location = new System.Drawing.Point(12, 59);
+            this._technicalTxt.Multiline = true;
+            this._technicalTxt.Name = "_technicalTxt";
+            this._technicalTxt.ReadOnly = true;
+            this._technicalTxt.Size = new System.Drawing.Size(951, 622);
+            this._technicalTxt.TabIndex = 3;
+            this._technicalTxt.TabStop = false;
+            // 
+            // _detailedTxt
+            // 
+            this._detailedTxt.BackColor = this.BackColor;
+            this._detailedTxt.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this._detailedTxt.Location = new System.Drawing.Point(12, 49);
+            this._detailedTxt.Multiline = true;
+            this._detailedTxt.Name = "_detailedTxt";
+            this._detailedTxt.ReadOnly = true;
+            this._detailedTxt.Size = new System.Drawing.Size(951, 622);
+            this._detailedTxt.TabIndex = 4;
+            this._detailedTxt.TabStop = false;
+            // 
+            // _essentialTxt
+            // 
+            this._essentialTxt.BackColor = this.BackColor;
+            this._essentialTxt.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this._essentialTxt.Location = new System.Drawing.Point(12, 59);
+            this._essentialTxt.Multiline = true;
+            this._essentialTxt.Name = "_essentialTxt";
+            this._essentialTxt.ReadOnly = true;
+            this._essentialTxt.Size = new System.Drawing.Size(951, 622);
+            this._essentialTxt.TabIndex = 4;
+            this._essentialTxt.TabStop = false;
             // 
             // unitTactic1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1025, 825);
-            this.Controls.Add(this.tabControl);
+            this.ClientSize = new System.Drawing.Size(1043, 601);
+            this.Controls.Add(this.panel5);
             this.Name = "unitTactic1";
             this.Text = "Outils de simulation de combat de Conflits Éternels";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -1717,7 +1744,7 @@
             ((System.ComponentModel.ISupportInitialize)(this._exhaustionLevelTB1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._exhaustionLevelTB2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._inegalityLevelTB)).EndInit();
-            this.tabControl.ResumeLayout(false);
+            this._mainTab.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.groupBox4.ResumeLayout(false);
@@ -1737,13 +1764,14 @@
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this._leaderStatTB1)).EndInit();
             this.tabPage2.ResumeLayout(false);
-            this.tabControl1.ResumeLayout(false);
+            this._reportTab.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
             this.tabPage5.ResumeLayout(false);
             this.tabPage5.PerformLayout();
+            this.panel5.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1790,7 +1818,7 @@
         private System.Windows.Forms.Label label39;
         private System.Windows.Forms.Label label38;
         private System.Windows.Forms.Label label37;
-        private System.Windows.Forms.TabControl tabControl;
+        private System.Windows.Forms.TabControl _mainTab;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Label label21;
@@ -1884,21 +1912,22 @@
         private System.Windows.Forms.Button _aidAddBtn1;
         private System.Windows.Forms.Button _aidDelBtn2;
         private System.Windows.Forms.Button _aidAddBtn2;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl _reportTab;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.Label label81;
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.Button _exportBtn;
-        private System.Windows.Forms.Label _essentialTxt;
-        private System.Windows.Forms.Label _detailTxt;
         private System.Windows.Forms.Label label84;
-        private System.Windows.Forms.Label _techniqueTxt;
         private System.Windows.Forms.Label label85;
         private System.Windows.Forms.Label _errorMsg;
         private System.Windows.Forms.CheckBox _aidMole1;
         private System.Windows.Forms.CheckBox _aidMole2;
         private System.Windows.Forms.Button _showStat;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.TextBox _technicalTxt;
+        private System.Windows.Forms.TextBox _essentialTxt;
+        private System.Windows.Forms.TextBox _detailedTxt;
     }
 }
 
