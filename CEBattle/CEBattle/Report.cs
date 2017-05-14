@@ -29,7 +29,7 @@ namespace CEBattle
         private Config.Time _time;
         private ImplicationSaboteur[] _saboteurImpact;
 
-
+        private List<General>[] _generalBest;
 
 
         // Text
@@ -59,6 +59,7 @@ namespace CEBattle
             _general = new List<General>[2];
             _general[0] = gen1;
             _general[1] = gen2;
+            _generalBest = new List<General>[2];
             _addon = new List<AddOn>[2];
             _addon[0] = add1;
             _addon[1] = add2;
@@ -372,9 +373,11 @@ namespace CEBattle
                 _technical += "Côté " + _sides[i] + "\n";
                 _imp[i].Sort();
                 _technical += _general[i][_imp[i][0].Id].ToString() + "\n";
+                _generalBest[i].Add(_general[i][_imp[i][0].Id]);
                 if (_imp[i].Count > 1)
                 {
                     _technical += _general[i][_imp[i][1].Id].ToString() + "\n";
+                    _generalBest[i].Add(_general[i][_imp[i][1].Id]);
                 }
                 
             }
