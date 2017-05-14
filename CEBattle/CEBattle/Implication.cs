@@ -9,8 +9,13 @@ namespace CEBattle
     /// <summary>
     ///  The implication during the battle
     /// </summary>
-    class Implication
+    class Implication : IEquatable<Implication>, IComparable<Implication>
     {
+        /// <summary>
+        /// An Id to find the good General according to the performance
+        /// </summary>
+        public int Id { get; set; } = 0;
+
         /// <summary>
         /// The number of extra unit
         /// </summary>
@@ -73,6 +78,19 @@ namespace CEBattle
 
             return retValue;
         }
+        
+        public bool Equals(Implication other)
+        {
+            return ArmyBonus == other.ArmyBonus;
+        }
 
+        public int CompareTo(Implication other)
+        {
+            // A null value means that this object is greater.
+            if (other == null)
+                return -1;
+            else
+                return -1*this.ArmyBonus.CompareTo(other.ArmyBonus);
+        }
     }
 }

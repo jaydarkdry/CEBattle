@@ -297,13 +297,17 @@ namespace CEBattle
         {
             Report r = new Report();
 
-            r.Setup(_general1, _general2, _addOn1, _addOn2, Side1Name, Side2Name, BattleName, _round, _time);
+            r.Setup(_general1, _general2, _addOn1, _addOn2, Side1Name, Side2Name, BattleName, _round, _time,
+                For1, For2, Fat1, Fat2, InegalityRatio);
 
             // Base strenght
             r.Phase1();
             // Add on
             r.Phase2();
             // Saboteur
+            r.Phase3();
+            // Sorting
+            r.Phase4();
             /*
             
             */

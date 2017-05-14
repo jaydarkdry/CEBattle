@@ -11,7 +11,7 @@ namespace CEBattle
     /// </summary>
     class Report
     {
-        // Phase 1
+        // Phases
         private string _battleName;
         private string[] _sides;
         private List<General>[] _general;
@@ -22,8 +22,13 @@ namespace CEBattle
         private int[] _totalForceBonus;
         private int[] _add;
         private int[] _counterAdd;
+        private float[] _inegatilies;
+        private Config.Fortification[] _for;
+        private Config.Fatigue[] _fat;
         private int _round;
         private Config.Time _time;
+        private ImplicationSaboteur[] _saboteurImpact;
+
 
 
 
@@ -48,7 +53,8 @@ namespace CEBattle
         /// <param name="add1"></param>
         /// <param name="add2"></param>
         public void Setup(List<General> gen1, List<General> gen2, List<AddOn> add1, List<AddOn> add2,
-            string side1, string side2, string battleName, int turn, Config.Time time)
+            string side1, string side2, string battleName, int turn, Config.Time time, 
+            Config.Fortification for1, Config.Fortification for2, Config.Fatigue fat1, Config.Fatigue fat2, float inegality)
         {
             _general = new List<General>[2];
             _general[0] = gen1;
@@ -62,6 +68,24 @@ namespace CEBattle
             _battleName = battleName;
             _round = turn;
             _time = time;
+            _inegatilies = new float[2];
+            if (inegality < 0)
+            {
+                _inegatilies[0] = -inegality;
+                _inegatilies[1] = 0;
+            }
+            else
+            {
+                _inegatilies[0] = 0;
+                _inegatilies[1] = inegality;
+            }
+            _for = new Config.Fortification[2];
+            _for[0] = for1;
+            _for[1] = for2;
+            _fat = new Config.Fatigue[2];
+            _fat[0] = fat1;
+            _fat[1] = fat2;
+            
 
             _imp = new List<Implication>[2];
             _force = new int[2];
@@ -79,8 +103,16 @@ namespace CEBattle
             _counterAdd = new int[2];
             _counterAdd[0] = 0;
             _counterAdd[1] = 0;
+            _saboteurImpact = new ImplicationSaboteur[2];
+
+
+
         }
 
+        /// <summary>
+        /// Phase 1 of the skimish.
+        /// Calculate the implication of each generals and the fields.
+        /// </summary>
         public void Phase1()
         {
             // Phase 1
@@ -100,9 +132,12 @@ namespace CEBattle
             {
                 _technical += "Côté " + _sides[i] + "\n";
                 _imp[i] = new List<Implication>();
+                int id = 0;
                 foreach (General g in _general[i])
                 {
                     Implication imp = g.GetImplication();
+                    imp.Id = id;
+                    id++;
                     _imp[i].Add(imp);
                     _technical += g.Name + ": ";
                     if (imp == null)
@@ -125,11 +160,20 @@ namespace CEBattle
                         _totalForceBonus[i] += _imp[i][j].ArmyTotal + _imp[i][j].Attack;
                     }
                 }
-                _technical += "donne un total de: " + _force[i] + " sur un maximum de " + _totalForce[i] + " (" + _totalForceBonus[i] + " avec bonus)\n\n";
+                _technical += "donne un total de: " + _force[i] + " sur un maximum de " + _totalForce[i] + " (" + _totalForceBonus[i] + " avec bonus)\n";
+                _force[i] = (int)(_force[i] * (1 + _inegatilies[i]));
+                _technical += "donne finalement: " + _force[i] + " avec la balance d'inégalité\n\n";
             }
             
         }
 
+        /// <summary>
+        /// Phase 2 of the skirmish
+        /// Calculate the AddOn implication.
+        /// First step if the base one.
+        /// Second step is a counter and a counter's counter if possible.
+        /// Please note that add-on can be negative, you cannot control them.
+        /// </summary>
         public void Phase2()
         {
             // Phase 2
@@ -224,63 +268,117 @@ namespace CEBattle
                 _totalForceBonus[i] = _force[i] + _add[i] + _counterAdd[i];
                 _technical += "Côté " + _sides[i] + ": " + _totalForceBonus[i] + "\n";
             }
+            _technical += "\n";
+        }
 
-            /*
+        /// <summary>
+        /// Phase 3 of the skirmish.
+        /// Calculate the implication of the Saboteur
+        /// At this stage, the battle is decided according to strenght, but the applicaiton of it can be tweak a little bit.
+        /// </summary>
+        public void Phase3()
+        {
+            //_totalForceBonus base on this
+            // Calculate Saboteur implication
+            // If possible, add necessary (Balance equation of failing)
+            // Delete army - % units
+            _technical += "Intervention des saboteurs\n";
 
-            // Check if needed
-            // Logic is if losing use one needed, can reply to it one. (If it's a mole, too bad)
-            force1 += add1;
-            force2 += add2;
-            int finalAdd1 = 0;
-            int finalAdd2 = 0;
-            if (force1 > force2)
+            // Phase 2 continues, add another round of reéquilibration
+            int[] order = { 0, 1 };
+            // Normally, if 1 is greater than 0, 1 can have another shot.
+            // If 0 is greater than 1, than 1 has the rights.
+            if (_totalForceBonus[0] > _totalForceBonus[1])
             {
-                // Force 2 can reply
-                if (_addOn2 != null)
-                    foreach (AddOn a in _addOn2)
-                    {
-                        if (a.CanUseAttack())
-                        {
-                            finalAdd2 = a.GetCombatImplication(totalForce2);
-                        }
-                    }
-                if (finalAdd2 != 0)
+                order[0] = 1;
+                order[1] = 0;
+                _technical += "Côté " + _sides[1] + " est l'actuelle perdant.\n";
+            }
+            else if (_totalForceBonus[0] == _totalForceBonus[1])
+            {
+                _technical += "Bataille égale, pas besoin de Saboteur.\n";
+                return;
+            }
+            else
+            {
+                _technical += "Côté " + _sides[0] + " est l'actuelle perdant.\n";
+            }
+            
+
+
+            // If order 0 is worst, check if Saboteur available, use only one.
+            General saboteur = null;
+            foreach(General g in _general[order[1]])
+            {
+                if (g.Saboteur && g.IsValid())
                 {
-                    // Fight back
-                    if (_addOn1 != null)
-                        foreach (AddOn a in _addOn1)
-                        {
-                            if (a.CanUseAttack())
-                            {
-                                finalAdd1 += a.GetCombatImplication(totalForce1);
-                            }
-                        }
+                    saboteur = g;
+                    break;
+                }
+            }
+            if (saboteur != null)
+            {
+                ImplicationSaboteur imp = saboteur.GetImplicationSaboteur();
+                _saboteurImpact[order[0]] = imp;
+                _technical += "Saboteur " + saboteur.Name + ": " + _saboteurImpact[order[0]].ToTechnicalString() + " est diponible.\n";
+                int delta = _totalForceBonus[order[1]] - _totalForceBonus[order[0]];
+                if (delta > imp.ArmyBonus)
+                {
+                    _technical += "Le saboteur ne peut rien y faire, il reste tranquille.\n";
+                }
+                else
+                {
+                    _totalForceBonus[order[0]] += delta * 2;
+                    Console.WriteLine(delta + " and " + saboteur.NbArmy);
+                    saboteur.ReduceArmy(imp.ReduceArmy(delta));
+                    Console.WriteLine(saboteur.NbArmy);
+                    _technical += "Le saboteur " + saboteur.Name + " a changé la balance, il lui reste " + saboteur.NbArmy + " armées.";
+                    // Can get busted
+                    if (imp.IsBusted())
+                    {
+                        _technical += "Nous savons qu'il s'agit de " + saboteur.Name + "\n";
+                    }
+                    
+                }
+
+                _technical += "Résultat de l'escarmouche avec saboteur: \n";
+
+                for (int i = 0; i < SIDE; i++)
+                {
+                    _technical += "Côté " + _sides[i] + ": " + _totalForceBonus[i] + "\n";
                 }
             }
             else
             {
-                // Force 1 can reply
-                if (_addOn1 != null)
-                    foreach (AddOn a in _addOn1)
-                    {
-                        if (a.CanUseAttack())
-                        {
-                            finalAdd1 = a.GetCombatImplication(totalForce1);
-                        }
-                    }
-                if (finalAdd1 != 0)
+                _technical += "Même résultat de l'escarmouche car aucun saboteur: \n";
+
+                for (int i = 0; i < SIDE; i++)
                 {
-                    // Fight back
-                    if (_addOn2 != null)
-                        foreach (AddOn a in _addOn2)
-                        {
-                            if (a.CanUseAttack())
-                            {
-                                finalAdd2 += a.GetCombatImplication(totalForce2);
-                            }
-                        }
+                    _technical += "Côté " + _sides[i] + ": " + _totalForceBonus[i] + "\n";
                 }
-            }*/
+            }
+            _technical += "\n";
+        }
+
+        /// <summary>
+        /// Phase 4 of the skirmish
+        /// Calculate the General implication
+        /// </summary>
+        public void Phase4()
+        {
+            _technical += "Les généraux qui se sont démarquer pendant l'escarmouche: \n";
+            for (int i=0; i<SIDE; i++)
+            {
+                _technical += "Côté " + _sides[i] + "\n";
+                _imp[i].Sort();
+                _technical += _general[i][_imp[i][0].Id].ToString() + "\n";
+                if (_imp[i].Count > 1)
+                {
+                    _technical += _general[i][_imp[i][1].Id].ToString() + "\n";
+                }
+                
+            }
+            _technical += "\n";
         }
 
         /// <summary>

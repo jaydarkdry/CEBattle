@@ -54,7 +54,7 @@ namespace CEBattle
 
         public Implication GetImplication()
         {
-            if (Saboteur)
+            if (Saboteur || !IsValid())
             {
                 return null;
             }
@@ -62,6 +62,26 @@ namespace CEBattle
             {
                 return new Implication(this.NbArmy, this.Stat.Attack);
             }
+        }
+
+        public ImplicationSaboteur GetImplicationSaboteur()
+        {
+            return new ImplicationSaboteur(NbArmy, this.Stat.Attack, this.Stat.ShowOff);
+        }
+
+        public void ReduceArmy(int dead)
+        {
+            this.NbArmy -= dead;
+            if (NbArmy <= 0)
+            {
+                NbArmy = 0;
+                _defeated = true;
+            }
+        }
+
+        public bool IsValid()
+        {
+            return !_defeated;
         }
 
         /// <summary>
@@ -150,7 +170,7 @@ namespace CEBattle
                     // -10% Nego power
                     Stat.Moral += 0.2f;
                     Stat.Defense -= 0.2f;
-                    Stat.ShowOff += 0.9f;
+                    Stat.ShowOff += 0.4f;
                     Stat.MoralLimit += 0.10f;
                     Stat.Lost += 0.2f;
                     Stat.Attack += 0.1f;
