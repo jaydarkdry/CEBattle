@@ -55,5 +55,12 @@ namespace CEBattle
             return (int)(value) + 1;
         }
 
+        public static bool ResultChance(float chance)
+        {
+            float value = (float)R.NextDouble();
+            Console.WriteLine("Value: " + value);
+            return value < chance;
+        }
+
     }
 }

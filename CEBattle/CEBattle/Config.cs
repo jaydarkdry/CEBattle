@@ -27,12 +27,12 @@ namespace CEBattle
 
         static public string[] AidsLbl =
         {
-            "Ouverture",
+            "Ouverture", // Done
             "Défense",
-            "Soin",
-            "Morale",
+            "Soin", 
+            "Morale", 
             "Échappatoire",
-            "Attaque",
+            "Attaque", // Done
             "Divin"
         };
 
@@ -95,6 +95,24 @@ namespace CEBattle
         
         };
 
+        public static float GetForticationPower(Fortification f)
+        {
+            switch(f)
+            {
+                case Fortification.Nothing:
+                    return 0;
+                case Fortification.Barack:
+                    return 0.1f;
+                case Fortification.Rambard:
+                    return 0.25f;
+                case Fortification.Fort:
+                    return 0.5f;
+                case Fortification.Castle:
+                    return 0.75f;
+            }
+            return 0;
+        }
+
         //2
         public enum Fatigue
         {
@@ -116,7 +134,25 @@ namespace CEBattle
 
         };
 
-        
+        public static float GetFatiguePower(Fatigue f)
+        {
+            switch (f)
+            {
+                case Fatigue.None:
+                    return 0;
+                case Fatigue.Little:
+                    return 0.05f;
+                case Fatigue.Moderate:
+                    return 0.10f;
+                case Fatigue.Lot:
+                    return 0.15f;
+                case Fatigue.Limit:
+                    return 0.20f;
+            }
+            return 0;
+        }
+
+
         public enum EndBehaviour
         {
             None,

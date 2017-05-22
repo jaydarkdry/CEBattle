@@ -60,6 +60,8 @@ namespace CEBattle
             _general[0] = gen1;
             _general[1] = gen2;
             _generalBest = new List<General>[2];
+            _generalBest[0] = new List<General>();
+            _generalBest[1] = new List<General>();
             _addon = new List<AddOn>[2];
             _addon[0] = add1;
             _addon[1] = add2;
@@ -162,8 +164,9 @@ namespace CEBattle
                     }
                 }
                 _technical += "donne un total de: " + _force[i] + " sur un maximum de " + _totalForce[i] + " (" + _totalForceBonus[i] + " avec bonus)\n";
-                _force[i] = (int)(_force[i] * (1 + _inegatilies[i]));
-                _technical += "donne finalement: " + _force[i] + " avec la balance d'inégalité\n\n";
+                _technical += "inégalités: " + _inegatilies[i] + " et fatigue: " + Config.EnumToString(_fat[i]) + "\n";
+                _force[i] = (int)(_force[i] * (1 + _inegatilies[i] - Config.GetFatiguePower(_fat[i])));
+                _technical += "donne finalement: " + _force[i] + " avec la balance d'inégalité et la fatigue\n\n";
             }
             
         }
@@ -187,7 +190,6 @@ namespace CEBattle
                 if (_addon[i] != null)
                     foreach (AddOn a in _addon[i])
                     {
-                        Console.WriteLine(a.Name + " on side: " + _sides[i]);
                         if (a.IsOrder() && a.IsOrderWhen(_time))
                         {
                             int imp = a.GetCombatImplication(_totalForce[i]);
@@ -229,8 +231,7 @@ namespace CEBattle
                     order[1] = 0;
                 }
             }
-
-            // Ne entre pas ici TODO
+            
             // The weakest attack first as a reply if he can!!
             if (_addon[order[0]] != null)
             {
@@ -382,6 +383,110 @@ namespace CEBattle
                 
             }
             _technical += "\n";
+        }
+
+        /// <summary>
+        /// Phase 5 of the skirmish
+        /// Calculate the lost if any (building fortification or general may be affected)
+        /// </summary>
+        public void Phase5()
+        {
+            int l = 0;
+            int lost = Math.Abs(_totalForceBonus[0] - _totalForceBonus[1]);
+            // Get losing side
+            if (_totalForceBonus[0] == _totalForceBonus[1])
+            {
+                _technical += "Rien de perdu, match égale.\n\n";
+                return;
+            }
+            else if(_totalForceBonus[0] < _totalForceBonus[1])
+            {
+                l = 0;
+            }
+            else
+            {
+                l = 1;
+            }
+
+            // Check the losing general OR fortification
+            _technical += "Perdant: " + _sides[l] + "\n";
+
+            // Losing can only be highlight general and fortication!
+            // Fortification level + Defense level
+            bool isOnFor = WarMath.ResultChance(Config.GetForticationPower(_for[l]) + _generalBest[l][0].Stat.Defense);
+            if (isOnFor && _for[l] != 0)
+            {
+                _technical += "Les défenses absorbe les dégats\n";
+                int thresh = (int) (_generalBest[l][0].NbArmy * Config.GetForticationPower(_for[l]));
+                if (lost > thresh)
+                {
+                    _for[l]--;
+                    _technical += "Et elle brise, c'est maintenant équivalent à: " + Config.EnumToString(_for[l]) + "\n";
+                }
+                else
+                {
+                    _technical += "Les défenses tiennent le coup.\n";
+                }
+            }
+            else
+            {
+                //Add-On available
+                if (_addon[l] != null)
+                {
+                    foreach (AddOn a in _addon[l])
+                    {
+                        if (a.CanUseDefense())
+                        {
+                            if (a.Stat.Defense < 0)
+                            {
+                                _technical += "Défense externe " + a.Name + " est un piège.\n";
+                                int extraLost = (int)((float)lost * -a.Stat.Defense);
+                                lost += extraLost;
+                                _technical += "Perte additionnel: " + extraLost + "\n";
+                            }
+                            else {
+                                bool block = WarMath.ResultChance(a.Stat.Defense);
+                                if (block)
+                                {
+                                    lost = 0;
+                                    _technical += "Défense externe " + a.Name + " prend l'assault.\n";
+                                }
+                                else
+                                {
+                                    _technical += "Défense externe " + a.Name + " n'est pas assez fort pour bloquer l'assault.\n";
+                                }
+                            }
+                            a.UsedAddOn();
+                            break;
+                        }
+                    }
+                }
+
+                //General take the blow
+                if (lost > 0)
+                {
+                    int leftOver = _generalBest[l][0].LosingArmy(lost);
+                    _technical += "Le général " + _generalBest[l][0].Name + " prend le coup.\n";
+                    _technical += _generalBest[l][0].ToDetailedHit();
+
+
+                    if (leftOver > 0 && _generalBest[l].Count > 1)
+                    {
+                        _technical += "En plus, le général " + _generalBest[l][1].Name + " prend le coup.\n";
+                        _generalBest[l][0].LosingArmy(lost);
+                        _technical += _generalBest[l][0].ToDetailedHit();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Phase 6 of the skirmish
+        /// Hostage phase
+        /// </summary>
+        public void Phase6()
+        {
+
         }
 
         /// <summary>

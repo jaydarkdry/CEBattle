@@ -290,6 +290,21 @@ namespace CEBattle
         }
 
         /// <summary>
+        /// The signal to enter in war, general can be ready.
+        /// </summary>
+        public void StartBattle()
+        {
+            foreach(General g in _general1)
+            {
+                g.StartBattle();
+            }
+            foreach (General g in _general2)
+            {
+                g.StartBattle();
+            }
+        }
+
+        /// <summary>
         /// A skirmish
         /// </summary>
         /// <returns></returns>
@@ -308,6 +323,10 @@ namespace CEBattle
             r.Phase3();
             // Sorting
             r.Phase4();
+            // Losing
+            r.Phase5();
+            // Hostage managing
+            r.Phase6();
             /*
             
             */

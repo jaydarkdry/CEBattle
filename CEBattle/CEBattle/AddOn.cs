@@ -20,7 +20,7 @@ namespace CEBattle
         public AddOnStat Stat;
 
         // Flag
-        public bool Used = false;
+        private bool _used = false;
         
 
         public AddOn(string name, bool mole, Config.Aids aid, Config.AidsLevel aidsLevel)
@@ -43,12 +43,19 @@ namespace CEBattle
 
         public int GetCombatImplication(int force)
         {
-            if (Used)
+            if (_used)
                 return 0;
             float value = (float)force * Stat.Attack;
             if (Stat.Time != Config.Time.AllBattle)
-                Used = true;
+                _used = true;
             return (int)value;
+        }
+
+        // Do not set directly the used flag
+        public void UsedAddOn()
+        {
+            if (Stat.Time != Config.Time.AllBattle)
+                _used = true;
         }
 
         public bool IsOrder()
@@ -76,7 +83,16 @@ namespace CEBattle
 
         public bool CanUseAttack()
         {
-            if (Stat.Time == Config.Time.WhenNeeded && !Used && Stat.Attack != 0)
+            if (Stat.Time == Config.Time.WhenNeeded && !_used && Stat.Attack != 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool CanUseDefense()
+        {
+            if (!_used && Stat.Defense != 0)
             {
                 return true;
             }

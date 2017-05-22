@@ -22,9 +22,14 @@ namespace CEBattle
         public GeneralStat Stat;
 
         // Flag
+        private bool _moralDefeated = false;
         private bool _defeated = false;
-        private bool _hostage = false;
+        private bool _hostage = false;  // If _generalDead is false and hostage true, the general is hostage!
         private bool _generalDead = false;
+        private bool _startingBattle = false;
+
+        // Keep value
+        private int _initial;
         
         // Empty constructor, need to be populate later
         public General(string name, int nbarmy, bool saboteur, Config.Attitude att, float[] armies )
@@ -34,6 +39,7 @@ namespace CEBattle
             Saboteur = saboteur;
             Att = att;
             Armies = armies;
+            _initial = NbArmy;
 
             Armies = new float[Config.UnitType];
             
@@ -50,6 +56,12 @@ namespace CEBattle
             Saboteur = false;
             Att = Config.Attitude.Neutral;
             Stat = new GeneralStat();
+        }
+
+        public void StartBattle()
+        {
+            _startingBattle = true;
+            _initial = NbArmy;
         }
 
         public Implication GetImplication()
@@ -69,6 +81,11 @@ namespace CEBattle
             return new ImplicationSaboteur(NbArmy, this.Stat.Attack, this.Stat.ShowOff);
         }
 
+        /// <summary>
+        /// Reduce the army number WITHOUT any logic.
+        /// * Uses for Saboteur
+        /// </summary>
+        /// <param name="dead">The dead units</param>
         public void ReduceArmy(int dead)
         {
             this.NbArmy -= dead;
@@ -77,6 +94,85 @@ namespace CEBattle
                 NbArmy = 0;
                 _defeated = true;
             }
+        }
+
+        /// <summary>
+        /// Reduce the army number WITH any logic.
+        /// * Uses for normal general
+        /// </summary>
+        /// <param name="lost">The initial lost</param>
+        /// <returns>The left over unit to die if too much.</returns>
+        public int LosingArmy(int lost)
+        {
+            int leftOver = 0;
+            // Step 1, get the real number of lost
+            int realLost = (int)(lost * (Stat.Lost+1));
+            Console.WriteLine("vrai perte: " + realLost);
+
+            // Step 2, Decrease unit
+            int initialActual = NbArmy;
+            NbArmy -= realLost;
+            Console.WriteLine("Restant: " + NbArmy);
+
+            // Step 3, If units are more
+            if (NbArmy <= 0)
+            {
+                Console.WriteLine("Nombre defait");
+                _defeated = true;
+                leftOver = -NbArmy;
+                NbArmy = 0;
+
+                // Chief dead?
+                Console.WriteLine("Show off " + Stat.ShowOff);
+                _generalDead = WarMath.ResultChance(Stat.ShowOff);
+                Console.WriteLine("General mort: " + _generalDead);
+
+                return leftOver;
+            }
+
+            // Step 4, decrease moral
+            float ratio = (float)(_initial-NbArmy) / _initial;
+            float ratioInstant = (float)(initialActual - NbArmy) / initialActual;
+            Console.WriteLine("Moral perte: " + ratio);
+            Stat.Moral += ratio;
+            if (ratioInstant > 0.5f) // Too much for limit
+            {
+                Stat.MoralLimit -= 0.2f;
+            }
+            Console.WriteLine("Moral: " + Stat.Moral);
+            Console.WriteLine("Moral limite: " + Stat.MoralLimit);
+
+            // Step 5, is defeated because of moral?
+            if (Stat.MoralLimit < Stat.Moral)
+            {
+                Console.WriteLine("Moral defeated: ");
+                _defeated = true;
+                _moralDefeated = true;
+                // Chief dead?
+                _generalDead = WarMath.ResultChance(Stat.ShowOff);
+                Console.WriteLine("General mort: " + _generalDead);
+            }
+
+            return leftOver;
+        }
+
+        public string ToDetailedHit()
+        {
+            string txt = "";
+            if (_defeated)
+            {
+                txt += "Le groupe du général " + Name + " est défait.\n";
+            }
+            if (_moralDefeated)
+            {
+                txt += "Le défaite est dû au moral.\n";
+            }
+            if (_generalDead)
+            {
+                txt += "Le général " + Name + " a péri pendant la bataille.\n";
+            }
+
+            return txt;
         }
 
         public bool IsValid()
@@ -90,7 +186,7 @@ namespace CEBattle
         public void ComputeStat()
         {
             // Start value
-            Stat.Moral = 0.9f;
+            Stat.Moral = 0.0f;
             Stat.Defense = 0f;
             Stat.ShowOff = 0.5f;
             Stat.MoralLimit = 0.9f;
@@ -106,15 +202,13 @@ namespace CEBattle
                     // 20%  defense
                     // -40% to show off general
                     // -10% moraleLimit
-                    // -20% lost
                     // -10% attack
                     // Behaviour none
                     // -10% Nego
-                    Stat.Moral -= 0.2f;
+                    Stat.Moral += 0.2f;
                     Stat.Defense += 0.2f;
                     Stat.ShowOff -= 0.4f;
                     Stat.MoralLimit -= 0.1f;
-                    Stat.Lost -= 0.2f;
                     Stat.Attack -= 0.1f;
                     Stat.Behaviour = Config.EndBehaviour.None;
                     Stat.NegoPower -= 0.1f;
@@ -124,15 +218,13 @@ namespace CEBattle
                     // 10%  defense
                     // -20% to show off general
                     // -5% moraleLimit
-                    // -10% lost
                     // -5% attack
                     // Behaviour Mercy
                     // 5% Nego power
-                    Stat.Moral -= 0.1f;
+                    Stat.Moral += 0.1f;
                     Stat.Defense += 0.1f;
                     Stat.ShowOff -= 0.2f;
                     Stat.MoralLimit -= 0.05f;
-                    Stat.Lost -= 0.1f;
                     Stat.Attack -= 0.05f;
                     Stat.Behaviour = Config.EndBehaviour.Mercy;
                     Stat.NegoPower += 0.05f;
@@ -145,12 +237,12 @@ namespace CEBattle
                     // 10% morale
                     // -10%  defense
                     // -20% to show off general
-                    // -5% moraleLimit
-                    // -10% lost
+                    // +5% moraleLimit
+                    // +10% lost
                     // 5% attack
                     // Behaviour: taking hostage
                     // 5 % Nego power
-                    Stat.Moral += 0.1f;
+                    Stat.Moral -= 0.1f;
                     Stat.Defense -= 0.1f;
                     Stat.ShowOff += 0.2f;
                     Stat.MoralLimit += 0.05f;
@@ -168,7 +260,7 @@ namespace CEBattle
                     // 10% attack
                     // Behaviour: carnage
                     // -10% Nego power
-                    Stat.Moral += 0.2f;
+                    Stat.Moral -= 0.2f;
                     Stat.Defense -= 0.2f;
                     Stat.ShowOff += 0.4f;
                     Stat.MoralLimit += 0.10f;

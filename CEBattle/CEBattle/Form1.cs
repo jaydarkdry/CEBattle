@@ -88,6 +88,7 @@ namespace CEBattle
             // Must validate they contains (call method validate)
 
             // Multiple skirmish normally
+            _war.StartBattle();
             Report r = _war.Skirmish();
             _mainTab.SelectedIndex = 1;
             _reportTab.SelectedIndex = 2;
@@ -336,7 +337,6 @@ namespace CEBattle
             {
                 for (int i = 0; i < gens.Count; i++)
                 {
-                    Console.WriteLine("General: " + gens[i].Name);
                     _generalCB1.Items[i] = gens[i].Name;
                 }
             }
