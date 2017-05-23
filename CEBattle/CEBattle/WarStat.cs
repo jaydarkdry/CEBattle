@@ -8,7 +8,10 @@ namespace CEBattle
 {
     partial class  WarStat : Stat
     {
-        public float Chance { get; set; } // Chance of winning, - = side 1, += side 2
+        /// <summary>
+        /// Chance of winning, - = side 1, += side 2
+        /// </summary>
+        public float Chance { get; set; }
 
         public WarStat() : base()
         {

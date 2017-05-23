@@ -17,17 +17,16 @@ namespace CEBattle
         public bool Saboteur { get; set; }
         public Config.Attitude Att { get; set; }
         public float[] Armies { get; set; } //TODO
+        
 
         // Stat
         public GeneralStat Stat;
 
         // Flag
+        public bool GeneralDead = false;
         private bool _moralDefeated = false;
-        private bool _defeated = false;
-        private bool _hostage = false;  // If _generalDead is false and hostage true, the general is hostage!
-        private bool _generalDead = false;
-        private bool _startingBattle = false;
-
+        public bool Defeated = false;
+        
         // Keep value
         private int _initial;
         
@@ -60,7 +59,6 @@ namespace CEBattle
 
         public void StartBattle()
         {
-            _startingBattle = true;
             _initial = NbArmy;
         }
 
@@ -92,7 +90,7 @@ namespace CEBattle
             if (NbArmy <= 0)
             {
                 NbArmy = 0;
-                _defeated = true;
+                Defeated = true;
             }
         }
 
@@ -118,14 +116,14 @@ namespace CEBattle
             if (NbArmy <= 0)
             {
                 Console.WriteLine("Nombre defait");
-                _defeated = true;
+                Defeated = true;
                 leftOver = -NbArmy;
                 NbArmy = 0;
 
                 // Chief dead?
                 Console.WriteLine("Show off " + Stat.ShowOff);
-                _generalDead = WarMath.ResultChance(Stat.ShowOff);
-                Console.WriteLine("General mort: " + _generalDead);
+                GeneralDead = WarMath.ResultChance(Stat.ShowOff);
+                Console.WriteLine("General mort: " + GeneralDead);
 
                 return leftOver;
             }
@@ -146,20 +144,21 @@ namespace CEBattle
             if (Stat.MoralLimit < Stat.Moral)
             {
                 Console.WriteLine("Moral defeated: ");
-                _defeated = true;
+                Defeated = true;
                 _moralDefeated = true;
                 // Chief dead?
-                _generalDead = WarMath.ResultChance(Stat.ShowOff);
-                Console.WriteLine("General mort: " + _generalDead);
+                GeneralDead = WarMath.ResultChance(Stat.ShowOff);
+                Console.WriteLine("General mort: " + GeneralDead);
             }
 
             return leftOver;
         }
+        
 
         public string ToDetailedHit()
         {
             string txt = "";
-            if (_defeated)
+            if (Defeated)
             {
                 txt += "Le groupe du général " + Name + " est défait.\n";
             }
@@ -167,7 +166,7 @@ namespace CEBattle
             {
                 txt += "Le défaite est dû au moral.\n";
             }
-            if (_generalDead)
+            if (GeneralDead)
             {
                 txt += "Le général " + Name + " a péri pendant la bataille.\n";
             }
@@ -175,10 +174,41 @@ namespace CEBattle
             return txt;
         }
 
+        public bool IsRecoverable()
+        {
+            if (NbArmy > 0 && !GeneralDead && _moralDefeated)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool CanHostage()
+        {
+            if (NbArmy > 0 && _moralDefeated)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool IsRevive(float moralBoost)
+        {
+            Stat.Moral -= moralBoost;
+            if (Stat.Moral < Stat.MoralLimit)
+            {
+                Defeated = false;
+                _moralDefeated = false;
+                return true;
+            }
+            return false;
+        }
+
         public bool IsValid()
         {
-            return !_defeated;
+            return !Defeated;
         }
+        
 
         /// <summary>
         ///  Compute the base stats

@@ -9,11 +9,26 @@ namespace CEBattle
     class Stat
     {
 
-        public float Moral { get; set; } // The base moral of the troops
-        public float MoralLimit { get; set; } // The limits when the troops go away
-        public float Lost { get; set; } // Modifier of lost (positive means more)
-        public float Attack { get; set; } // Modifier when attacking
-        public float Defense { get; set; } // Modifier when defending
+        /// <summary>
+        /// The base moral of the troops
+        /// </summary>
+        public float Moral { get; set; }
+        /// <summary>
+        /// The limits when the troops go away
+        /// </summary>
+        public float MoralLimit { get; set; }
+        /// <summary>
+        /// Modifier of lost (positive means more)
+        /// </summary>
+        public float Lost { get; set; }
+        /// <summary>
+        /// Modifier when attacking
+        /// </summary>
+        public float Attack { get; set; }
+        /// <summary>
+        /// Modifier when defending
+        /// </summary>
+        public float Defense { get; set; }
 
 
         public Stat()

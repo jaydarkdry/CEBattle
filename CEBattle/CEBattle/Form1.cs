@@ -89,16 +89,23 @@ namespace CEBattle
 
             // Multiple skirmish normally
             _war.StartBattle();
-            Report r = _war.Skirmish();
+            
             _mainTab.SelectedIndex = 1;
             _reportTab.SelectedIndex = 2;
             _technicalTxt.Text = "";
-            string[] text = r.ToTechnical().Split('\n');
-            for (int i=0; i< text.Length; i++)
+
+            Report r;
+            do
             {
-                _technicalTxt.AppendText(text[i]);
-                _technicalTxt.AppendText(Environment.NewLine);
-            }
+                r = _war.Skirmish();
+                string[] text = r.ToTechnical().Split('\n');
+                for (int i = 0; i < text.Length; i++)
+                {
+                    _technicalTxt.AppendText(text[i]);
+                    _technicalTxt.AppendText(Environment.NewLine);
+                }
+                _war.Round++;
+            } while (!r.Final);
 
 
 
@@ -554,6 +561,24 @@ namespace CEBattle
             _aidTypeCB2.SelectedIndex = 0;
             _aidLevelTB2.Value = 0;
             _war.ComputeStat();
+        }
+
+        private void _exportBtn_Click(object sender, EventArgs e)
+        {
+
+            SaveFile(".\\technical" + _battleName.Text + "_"
+                + _armyName1.Text + "_VS_" + _armyName2.Text + "_" + DateTime.Now.Hour + "-"
+                + DateTime.Now.Minute + "-" + DateTime.Now.Second + ".txt", _technicalTxt.Text);
+
+            // TODO all text
+        }
+
+        private void SaveFile(string filename, string text)
+        {
+            System.IO.StreamWriter file = new System.IO.StreamWriter(filename);
+            file.WriteLine(text);
+
+            file.Close();
         }
         //TODO army type
     }

@@ -169,15 +169,15 @@
             this._exportBtn = new System.Windows.Forms.Button();
             this._reportTab = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this._essentialTxt = new System.Windows.Forms.TextBox();
             this.label81 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this._detailedTxt = new System.Windows.Forms.TextBox();
             this.label84 = new System.Windows.Forms.Label();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this._technicalTxt = new System.Windows.Forms.TextBox();
             this.label85 = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
-            this._technicalTxt = new System.Windows.Forms.TextBox();
-            this._detailedTxt = new System.Windows.Forms.TextBox();
-            this._essentialTxt = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this._fortificationLevelTB1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._fortificationLevelTB2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._exhaustionLevelTB1)).BeginInit();
@@ -1607,6 +1607,7 @@
             this._exportBtn.TabIndex = 1;
             this._exportBtn.Text = "Exporter";
             this._exportBtn.UseVisualStyleBackColor = true;
+            this._exportBtn.Click += new System.EventHandler(this._exportBtn_Click);
             // 
             // _reportTab
             // 
@@ -1631,6 +1632,18 @@
             this.tabPage3.Text = "Essentiel";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // _essentialTxt
+            // 
+            this._essentialTxt.BackColor = this.BackColor;
+            this._essentialTxt.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this._essentialTxt.Location = new System.Drawing.Point(12, 59);
+            this._essentialTxt.Multiline = true;
+            this._essentialTxt.Name = "_essentialTxt";
+            this._essentialTxt.ReadOnly = true;
+            this._essentialTxt.Size = new System.Drawing.Size(951, 622);
+            this._essentialTxt.TabIndex = 4;
+            this._essentialTxt.TabStop = false;
+            // 
             // label81
             // 
             this.label81.AutoSize = true;
@@ -1653,6 +1666,18 @@
             this.tabPage4.Text = "Détaillé";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
+            // _detailedTxt
+            // 
+            this._detailedTxt.BackColor = this.BackColor;
+            this._detailedTxt.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this._detailedTxt.Location = new System.Drawing.Point(12, 49);
+            this._detailedTxt.Multiline = true;
+            this._detailedTxt.Name = "_detailedTxt";
+            this._detailedTxt.ReadOnly = true;
+            this._detailedTxt.Size = new System.Drawing.Size(951, 622);
+            this._detailedTxt.TabIndex = 4;
+            this._detailedTxt.TabStop = false;
+            // 
             // label84
             // 
             this.label84.AutoSize = true;
@@ -1674,6 +1699,18 @@
             this.tabPage5.Text = "Technique";
             this.tabPage5.UseVisualStyleBackColor = true;
             // 
+            // _technicalTxt
+            // 
+            this._technicalTxt.BackColor = this.BackColor;
+            this._technicalTxt.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this._technicalTxt.Location = new System.Drawing.Point(12, 59);
+            this._technicalTxt.Multiline = true;
+            this._technicalTxt.Name = "_technicalTxt";
+            this._technicalTxt.ReadOnly = true;
+            this._technicalTxt.Size = new System.Drawing.Size(951, 622);
+            this._technicalTxt.TabIndex = 3;
+            this._technicalTxt.TabStop = false;
+            // 
             // label85
             // 
             this.label85.AutoSize = true;
@@ -1693,42 +1730,6 @@
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(1019, 582);
             this.panel5.TabIndex = 53;
-            // 
-            // _technicalTxt
-            // 
-            this._technicalTxt.BackColor = this.BackColor;
-            this._technicalTxt.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this._technicalTxt.Location = new System.Drawing.Point(12, 59);
-            this._technicalTxt.Multiline = true;
-            this._technicalTxt.Name = "_technicalTxt";
-            this._technicalTxt.ReadOnly = true;
-            this._technicalTxt.Size = new System.Drawing.Size(951, 622);
-            this._technicalTxt.TabIndex = 3;
-            this._technicalTxt.TabStop = false;
-            // 
-            // _detailedTxt
-            // 
-            this._detailedTxt.BackColor = this.BackColor;
-            this._detailedTxt.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this._detailedTxt.Location = new System.Drawing.Point(12, 49);
-            this._detailedTxt.Multiline = true;
-            this._detailedTxt.Name = "_detailedTxt";
-            this._detailedTxt.ReadOnly = true;
-            this._detailedTxt.Size = new System.Drawing.Size(951, 622);
-            this._detailedTxt.TabIndex = 4;
-            this._detailedTxt.TabStop = false;
-            // 
-            // _essentialTxt
-            // 
-            this._essentialTxt.BackColor = this.BackColor;
-            this._essentialTxt.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this._essentialTxt.Location = new System.Drawing.Point(12, 59);
-            this._essentialTxt.Multiline = true;
-            this._essentialTxt.Name = "_essentialTxt";
-            this._essentialTxt.ReadOnly = true;
-            this._essentialTxt.Size = new System.Drawing.Size(951, 622);
-            this._essentialTxt.TabIndex = 4;
-            this._essentialTxt.TabStop = false;
             // 
             // unitTactic1
             // 

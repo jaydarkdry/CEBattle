@@ -8,9 +8,18 @@ namespace CEBattle
 {
     partial class  GeneralStat : Stat
     {
-        public Config.EndBehaviour Behaviour { get; set; } // End behaviour
-        public float NegoPower { get; set; } // Negociation power for decision
-        public float ShowOff { get; set; } // % to give the highlight to the chief
+        /// <summary>
+        /// End behaviour
+        /// </summary>
+        public Config.EndBehaviour Behaviour { get; set; } 
+        /// <summary>
+        /// Negociation power for decision
+        /// </summary>
+        public float NegoPower { get; set; }
+        /// <summary>
+        /// % to give the highlight to the chief
+        /// </summary>
+        public float ShowOff { get; set; }
 
         public GeneralStat() : base()
         {

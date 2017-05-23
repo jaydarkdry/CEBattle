@@ -11,6 +11,11 @@ namespace CEBattle
     /// </summary>
     class Report
     {
+        /// <summary>
+        /// The final battle
+        /// </summary>
+        public bool Final = false;
+
         // Phases
         private string _battleName;
         private string[] _sides;
@@ -128,7 +133,7 @@ namespace CEBattle
                 return;
             }
             
-            _technical += "Escarmouche " + _round + " (" + Config.EnumToString(_time) + ") dans la bataille de " + _battleName + ": \n";
+            _technical += "Escarmouche " + _round + " dans la bataille de " + _battleName + ": \n";
             _technical += "Implication des généraux dans la bataille: \n";
 
             for (int i =0; i < SIDE; i++)
@@ -139,9 +144,6 @@ namespace CEBattle
                 foreach (General g in _general[i])
                 {
                     Implication imp = g.GetImplication();
-                    imp.Id = id;
-                    id++;
-                    _imp[i].Add(imp);
                     _technical += g.Name + ": ";
                     if (imp == null)
                     {
@@ -149,9 +151,12 @@ namespace CEBattle
                     }
                     else
                     {
+                        imp.Id = id;
+                        _imp[i].Add(imp);
                         _technical += imp.ToTechnicalString() + "\n";
                     }
-                    
+                    id++;
+
                 }
 
                 for (int j = 0; j < _imp[i].Count; j++)
@@ -375,7 +380,7 @@ namespace CEBattle
                 _imp[i].Sort();
                 _technical += _general[i][_imp[i][0].Id].ToString() + "\n";
                 _generalBest[i].Add(_general[i][_imp[i][0].Id]);
-                if (_imp[i].Count > 1)
+                if (_imp[i].Count > 1 && _imp[i][1] != null)
                 {
                     _technical += _general[i][_imp[i][1].Id].ToString() + "\n";
                     _generalBest[i].Add(_general[i][_imp[i][1].Id]);
@@ -473,11 +478,12 @@ namespace CEBattle
                     if (leftOver > 0 && _generalBest[l].Count > 1)
                     {
                         _technical += "En plus, le général " + _generalBest[l][1].Name + " prend le coup.\n";
-                        _generalBest[l][0].LosingArmy(lost);
-                        _technical += _generalBest[l][0].ToDetailedHit();
+                        _generalBest[l][1].LosingArmy(leftOver);
+                        _technical += _generalBest[l][1].ToDetailedHit();
                     }
                 }
             }
+            _technical += "\n";
         }
 
         /// <summary>
@@ -486,7 +492,235 @@ namespace CEBattle
         /// </summary>
         public void Phase6()
         {
+            int l;
+            int w;
+            if (_totalForceBonus[0] == _totalForceBonus[1])
+            {
+                return;
+            }
+            else if (_totalForceBonus[0] < _totalForceBonus[1])
+            {
+                l = 0;
+                w = 1;
+            }
+            else
+            {
+                l = 1;
+                w = 0;
+            }
+            
+            // Step 1, Add-On usable to boost Moral
+            //Add-On available
+            if (_addon[l] != null)
+            {
+                foreach (AddOn a in _addon[l])
+                {
+                    Console.WriteLine("Can use it? " + a.CanUseMorale());
+                    if (a.CanUseMorale())
+                    {
+                        bool useit = false;
+                        int i = 0;
+                        Console.WriteLine("Recover 0 " + _generalBest[l][0].IsRecoverable());
+                        if (_generalBest[l][0].IsRecoverable())
+                        {
+                            useit = true;
+                            i = 0;
+                           
+                        }
+                        else if(_generalBest[l].Count > 1 && _generalBest[l][0].IsRecoverable())
+                        {
+                            useit = true;
+                            i = 1;
+                        }
+                        if (useit)
+                        {
+                            bool revive = _generalBest[l][i].IsRevive(a.Stat.Moral);
+                            if (revive)
+                            {
+                                _technical += "L'aide " + a.Name + " donne un boost de morale à " + _generalBest[l][i].Name + ", le groupe revient sur le champ de bataille.\n";
+                            }
+                            else
+                            {
+                                _technical += "L'aide " + a.Name + " n,est aps suffisante pour le morale.\n";
+                            }
+                            a.UsedAddOn();
+                            break;
+                        }
+                    }
+                }
+            }
 
+            // Step 2, Decision making is defeated but by moral.
+            bool[] moraleAction = { false, false };
+            if (_generalBest[l][0].CanHostage())
+            {
+                moraleAction[0] = true;
+            }
+            if (_generalBest[l].Count > 1 && _generalBest[l][0].CanHostage())
+            {
+                moraleAction[1] = true;
+            }
+            if (moraleAction[0] || moraleAction[1])
+            {
+                _technical += "Il y a des otages.\n";
+
+                int massacre = 0;
+                int mercy = 0;
+                int hostage = 0;
+                foreach (General g in _general[w])
+                {
+                    if (g.IsValid())
+                    {
+                        int nego = WarMath.ResultPower(100 + (int)(100 * g.Stat.NegoPower));
+                        switch (g.Stat.Behaviour)
+                        {
+                            case Config.EndBehaviour.None:
+                            case Config.EndBehaviour.Mercy:
+                                mercy += nego;
+                                break;
+                            case Config.EndBehaviour.Carnage:
+                                massacre += nego;
+                                break;
+                            case Config.EndBehaviour.Hostage:
+                                hostage += nego;
+                                break;
+                        }
+                    }
+                }
+                _technical += "Decision sur les fuyards: \n";
+                _technical += Config.EnumToString(Config.EndBehaviour.Mercy) + ": " + mercy + "\n";
+                _technical += Config.EnumToString(Config.EndBehaviour.Carnage) + ": " + massacre + "\n";
+                _technical += Config.EnumToString(Config.EndBehaviour.Hostage) + ": " + hostage + "\n";
+
+                // Sorting
+                Config.EndBehaviour decision;
+                if (mercy > massacre)
+                {
+                    if (hostage > mercy)
+                    {
+                        decision = Config.EndBehaviour.Hostage;
+                    }
+                    else
+                    {
+                        decision = Config.EndBehaviour.Mercy;
+                    }
+                }
+                else
+                {
+                    if (hostage > massacre)
+                    {
+                        decision = Config.EndBehaviour.Hostage;
+                    }
+                    else
+                    {
+                        decision = Config.EndBehaviour.Carnage;
+                    }
+                }
+                _technical += "Décision final: " + Config.EnumToString(decision);
+
+                for (int i = 0; i < 2; i++)
+                {
+                    // Impact on both general
+                    if (moraleAction[i])
+                    {
+                        if (decision == Config.EndBehaviour.Carnage && decision == Config.EndBehaviour.Hostage)
+                        {
+                            // Last resort! Check on aid to help escape!
+                            if (_addon[l] != null)
+                            {
+                                foreach (AddOn a in _addon[l])
+                                {
+                                    if (a.CanUseEscape())
+                                    {
+                                        bool escape = WarMath.ResultChance(a.Stat.Escape);
+                                        if (escape)
+                                        {
+                                            _technical += "Le général " + _generalBest[l][i].Name + " s'enfuit grâce à " + a.Name + "\n";
+                                            moraleAction[i] = false;
+                                            continue;
+                                        }
+                                        else
+                                        {
+                                            _technical += "Aide de " + a.Name + " insuffisante pour " + _generalBest[l][i].Name + "\n";
+
+                                        }
+                                    }
+                                }
+                            }
+
+                            _technical += "Le groupe du général " + _generalBest[l][i].Name + "\n";
+                            if (decision == Config.EndBehaviour.Hostage)
+                            {
+                                _technical += " est prit en otage\n";
+                            }
+                            if (decision == Config.EndBehaviour.Carnage)
+                            {
+                                _technical += "se fait massacrer\n";
+                            }
+                            if (_generalBest[l][i].GeneralDead)
+                            {
+                                _technical += "Le général " + _generalBest[l][i].Name + " est";
+                            }
+                            if (decision == Config.EndBehaviour.Hostage)
+                            {
+                                _technical += " prit en otage\n";
+                            }
+                            if (decision == Config.EndBehaviour.Carnage)
+                            {
+                                _technical += " massacré\n";
+                            }
+
+                        }
+                        else
+                        {
+                            _technical += "\nLes fuyards ont quitter le champ de bataille.";
+                        }
+                        // Mercy and nothing is normal
+                    }
+                }
+            }
+            
+            //Delete defeated general
+            for (int j = 0; j < SIDE; j++)
+            {
+                for (int i = _general[j].Count - 1; i >= 0; i--)
+                {
+                    if (_general[j][i].Defeated)
+                    {
+                        _general[j].RemoveAt(i);
+                    }
+                }
+            }
+
+            //Checkout the battle output
+            int adverse = 1;
+            for(int i=0; i<SIDE; i++)
+            {
+                bool sideLose = true;
+                foreach (General g in _general[i])
+                {
+                    if (!g.Saboteur)
+                    {
+                        sideLose = false;
+                        break;
+                    }
+                }
+                if (sideLose)
+                {
+                    _technical += "\n\nLa bataille est fini " + _sides[i] + " est perdant.\n";
+                    _technical += _sides[adverse] + " a gagné la bataille de " + _battleName;
+
+                    Final = true;
+                    return;
+                }
+                adverse = 0;
+            }
+        }
+
+        public void UpdateStatus(out Config.Fortification for1, out Config.Fortification for2)
+        {
+            for1 = _for[0];
+            for2 = _for[1];
         }
 
         /// <summary>

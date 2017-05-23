@@ -35,7 +35,7 @@ namespace CEBattle
         private WarStat _stat;
 
         // Step
-        private int _round = 0;
+        public int Round = 1;
         private Config.Time _time = Config.Time.Start;
 
         // Empty constructor
@@ -312,7 +312,7 @@ namespace CEBattle
         {
             Report r = new Report();
 
-            r.Setup(_general1, _general2, _addOn1, _addOn2, Side1Name, Side2Name, BattleName, _round, _time,
+            r.Setup(_general1, _general2, _addOn1, _addOn2, Side1Name, Side2Name, BattleName, Round, _time,
                 For1, For2, Fat1, Fat2, InegalityRatio);
 
             // Base strenght
@@ -327,20 +327,9 @@ namespace CEBattle
             r.Phase5();
             // Hostage managing
             r.Phase6();
-            /*
-            
-            */
-            // Phase 3
-            // Saboteur phase
 
-            // Phase 4
-            // Get winning team, calculated ratio of implication and determine loss
-
-            // Phase 5
-            // Defense and lost apply
-
-            // Phase 6
-            // Morale issue
+            // Will change during battle
+            r.UpdateStatus(out For1, out For2);
             return r;
         }
 

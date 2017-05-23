@@ -8,7 +8,14 @@ namespace CEBattle
 {
     partial class  AddOnStat : Stat
     {
-        public Config.Time Time; // When the stat is used
+        /// <summary>
+        /// When the stat is used
+        /// </summary>
+        public Config.Time Time;
+        /// <summary>
+        /// The escape bonus
+        /// </summary>
+        public float Escape; 
 
         public AddOnStat() : base()
         {
@@ -19,6 +26,7 @@ namespace CEBattle
         {
             string retValue = base.ToString();
             retValue += "Temps d'action: " + Config.EnumToString(Time) + "\n";
+            retValue += "Chance d'échappatoire: " + this.Escape + "\n";
             return retValue;
         }
 

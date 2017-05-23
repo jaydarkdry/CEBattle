@@ -88,7 +88,7 @@ namespace CEBattle
         {
             // A null value means that this object is greater.
             if (other == null)
-                return -1;
+                return 1;
             else
                 return -1*this.ArmyBonus.CompareTo(other.ArmyBonus);
         }

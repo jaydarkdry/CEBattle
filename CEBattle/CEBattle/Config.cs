@@ -177,8 +177,7 @@ namespace CEBattle
             Start,
             AllBattle,
             WhenNeeded,
-            End,
-            DecisionMaking
+            End
         }
 
         static public string[] TimeLbl =
@@ -187,8 +186,7 @@ namespace CEBattle
             "Commencement",
             "En tout temps",
             "Au besoin",
-            "Fin",
-            "Décision"
+            "Fin"
         };
 
 

@@ -65,7 +65,6 @@ namespace CEBattle
                 case Config.Time.AllBattle:
                 case Config.Time.Start:
                 case Config.Time.End:
-                case Config.Time.DecisionMaking:
                     return true;
                 default:
                     return false;
@@ -93,6 +92,24 @@ namespace CEBattle
         public bool CanUseDefense()
         {
             if (!_used && Stat.Defense != 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool CanUseMorale()
+        {
+            if (!_used && Stat.Moral != 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool CanUseEscape()
+        {
+            if (!_used && Stat.Time == Config.Time.End)
             {
                 return true;
             }
@@ -129,6 +146,7 @@ namespace CEBattle
             Stat.Moral = 0;
             Stat.MoralLimit = 1;
             Stat.Lost = 0;
+            Stat.Escape = 0;
             Stat.Attack = 0;
             switch (Aid)
             {
@@ -147,7 +165,7 @@ namespace CEBattle
                     Stat.Time = Config.Time.AllBattle;
                     break;
                 case Config.Aids.Escape:
-                    Stat.Lost = -percent;
+                    Stat.Escape = percent;
                     Stat.Time = Config.Time.End;
                     break;
                 case Config.Aids.Healing:
