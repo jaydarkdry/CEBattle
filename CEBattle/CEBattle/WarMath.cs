@@ -48,9 +48,13 @@ namespace CEBattle
 
         }
 
-        public static int ResultPower(int nbArmy)
+        public static int ResultPower(int nbArmy, Boolean tweak=false)
         {
             float value = (float)R.NextDouble();
+            if (tweak)
+            {
+                value = Math.Max(0.3f, value);
+            }
             value = nbArmy * value;
             return (int)(value) + 1;
         }

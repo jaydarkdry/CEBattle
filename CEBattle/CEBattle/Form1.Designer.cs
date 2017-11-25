@@ -178,6 +178,8 @@
             this._technicalTxt = new System.Windows.Forms.TextBox();
             this.label85 = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
+            this.label82 = new System.Windows.Forms.Label();
+            this.label83 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this._fortificationLevelTB1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._fortificationLevelTB2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._exhaustionLevelTB1)).BeginInit();
@@ -1052,6 +1054,7 @@
             this.panel2.AutoScroll = true;
             this.panel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panel2.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.panel2.Controls.Add(this.label83);
             this.panel2.Controls.Add(this._saboteur2);
             this.panel2.Controls.Add(this.label51);
             this.panel2.Controls.Add(this._unitTactic2);
@@ -1296,6 +1299,7 @@
             this.panel1.AutoScroll = true;
             this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panel1.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.panel1.Controls.Add(this.label82);
             this.panel1.Controls.Add(this._saboteur1);
             this.panel1.Controls.Add(this.label50);
             this.panel1.Controls.Add(this._unitTactic1);
@@ -1731,6 +1735,24 @@
             this.panel5.Size = new System.Drawing.Size(1019, 582);
             this.panel5.TabIndex = 53;
             // 
+            // label82
+            // 
+            this.label82.AutoSize = true;
+            this.label82.Location = new System.Drawing.Point(152, 39);
+            this.label82.Name = "label82";
+            this.label82.Size = new System.Drawing.Size(78, 13);
+            this.label82.TabIndex = 82;
+            this.label82.Text = "1 caserne = 50";
+            // 
+            // label83
+            // 
+            this.label83.AutoSize = true;
+            this.label83.Location = new System.Drawing.Point(151, 39);
+            this.label83.Name = "label83";
+            this.label83.Size = new System.Drawing.Size(78, 13);
+            this.label83.TabIndex = 83;
+            this.label83.Text = "1 caserne = 50";
+            // 
             // unitTactic1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1929,6 +1951,8 @@
         private System.Windows.Forms.TextBox _technicalTxt;
         private System.Windows.Forms.TextBox _essentialTxt;
         private System.Windows.Forms.TextBox _detailedTxt;
+        private System.Windows.Forms.Label label83;
+        private System.Windows.Forms.Label label82;
     }
 }
 

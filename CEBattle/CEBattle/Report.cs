@@ -113,7 +113,26 @@ namespace CEBattle
             _counterAdd[1] = 0;
             _saboteurImpact = new ImplicationSaboteur[2];
 
+            if (_round == 1)
+            {
+                _detailed += "La bataille est sur point de commencer, les forces sont placé et les dés sont jetés,\n";
+                _detailed += "Chaque groupe est prêt à une stratégie, l'issue se résout ce soir.\n";
 
+                _detailed += "\nLa Bataille de " + _battleName + " commence!!";
+
+                for (int i = 0; i < 2; i++)
+                {
+                    _detailed += "D'un côté, nous avons le groupe " + _sides[i] + "\n";
+                    _detailed += "Les généraux sont nul autre que ";
+                    for (int j = 0; j < _general[i].Count; j++)
+                    {
+                        _detailed += _general[i][j].Name + "; ";
+                    }
+                    _detailed += "\n\n";
+                }
+
+                _detailed += "Que le combat commence!\n\n\n";
+            }
 
         }
 
@@ -135,6 +154,7 @@ namespace CEBattle
             
             _technical += "Escarmouche " + _round + " dans la bataille de " + _battleName + ": \n";
             _technical += "Implication des généraux dans la bataille: \n";
+            _detailed += "-------------------\n" + "Les généraux chargent!!\n";
 
             for (int i =0; i < SIDE; i++)
             {
@@ -189,9 +209,12 @@ namespace CEBattle
             // Add-on essentials
             // Normal
             _technical += "Implication des aide extérieures OBLIGATOIRE dans la bataille: \n";
+            
             for (int i=0; i<SIDE; i++)
             {
+                bool hasOne = false;
                 _technical += "Côté " + _sides[i] + "\n";
+                
                 if (_addon[i] != null)
                     foreach (AddOn a in _addon[i])
                     {
@@ -200,9 +223,21 @@ namespace CEBattle
                             int imp = a.GetCombatImplication(_totalForce[i]);
                             _add[i] += imp;
                             _technical += a.Name + ": " + imp + "\n";
+                            if (imp > 0)
+                            {
+                                if (!hasOne)
+                                {
+                                    _detailed += "Les tactiques " + _sides[i] + " commencent!\n";
+                                    _detailed += "Du côté " + _sides[i] + ", nous avons: ";
+                                    hasOne = true;
+                                }
+                                _detailed += a.Name + "; ";
+                            }
                         }
                     }
+                _detailed += "\n";
             }
+            
 
             _technical += "Résultat de l'escarmouche sans ajout: \n";
 
@@ -214,15 +249,21 @@ namespace CEBattle
 
             // Phase 2 continues, add another round of reéquilibration
             int[] order = { 0, 1 };
+
+            _detailed += Flavor.Fighting();
+
             // Normally, if 1 is greater than 0, 1 can have another shot.
             // If 0 is greater than 1, than 1 has the rights.
             if (_totalForceBonus[0] > _totalForceBonus[1])
             {
+                _detailed += "L'armée " + _sides[1] + " est en mauvaise posture...\n";
                 order[0] = 1;
                 order[1] = 0;
+                
             }
             else if(_totalForceBonus[0] == _totalForceBonus[1])
             {
+                _detailed += "La situation est tendue, chaque côté maintient son bout de terrain!\n";
                 // For tie, get 50% to get advantage
                 float rand = WarMath.ResultPower(10);
                 if (rand < 5)
@@ -236,6 +277,10 @@ namespace CEBattle
                     order[1] = 0;
                 }
             }
+            else
+            {
+                _detailed += "L'armée " + _sides[0] + " est en mauvaise posture...\n";
+            }
             
             // The weakest attack first as a reply if he can!!
             if (_addon[order[0]] != null)
@@ -247,8 +292,10 @@ namespace CEBattle
                         int imp = a.GetCombatImplication(_totalForce[order[0]]);
                         _counterAdd[order[0]] = imp;
                         _technical += "Côté " + _sides[order[0]] + " contre attaque avec " + a.Name + ": " + imp + "\n";
+                        _detailed += "Mais attention! Le groupe " + _sides[order[0]] + " contre attaque avec " + a.Name + "\n";
                     }
                 }
+                _detailed += "Est-ce que ce sera suffisant?\n";
             }
             // If the help is useful, we can counter attack the counter attack
             if (_counterAdd[order[0]] > 0)
@@ -263,6 +310,7 @@ namespace CEBattle
                             int imp = a.GetCombatImplication(_totalForce[order[1]]);
                             _counterAdd[order[1]] = imp;
                             _technical += "Côté " + _sides[order[1]] + " contre attaque la contre attaque avec " + a.Name + ": " + imp + "\n";
+                            _detailed += "Attention, le groupe " + _sides[order[1]] + " n'en a pas fini! Une contre attaque avec " + a.Name + "\n";
                         }
                     }
                 }
@@ -340,10 +388,17 @@ namespace CEBattle
                     saboteur.ReduceArmy(imp.ReduceArmy(delta));
                     Console.WriteLine(saboteur.NbArmy);
                     _technical += "Le saboteur " + saboteur.Name + " a changé la balance, il lui reste " + saboteur.NbArmy + " armées.";
+                    
                     // Can get busted
-                    if (imp.IsBusted())
+                    if (WarMath.ResultChance(saboteur.Stat.ShowOff))
                     {
                         _technical += "Nous savons qu'il s'agit de " + saboteur.Name + "\n";
+                        _detailed += "Un revirement de situation vient d'avoir lieu!\n";
+                        _detailed += "On aurait juré voir " + saboteur.Name + " nuire à son groupe, c'est un saboteur!\n";
+                    }
+                    else
+                    {
+                        _technical += "Le saboteur reste dans l'anonimat.\n";
                     }
                     
                 }
@@ -373,21 +428,27 @@ namespace CEBattle
         /// </summary>
         public void Phase4()
         {
-            _technical += "Les généraux qui se sont démarquer pendant l'escarmouche: \n";
+            _detailed += "Les dés sont jetés pour cette " + _round + " escarmouche.\n";
+            _technical += "Les généraux qui se sont démarqués pendant l'escarmouche: \n";
             for (int i=0; i<SIDE; i++)
             {
                 _technical += "Côté " + _sides[i] + "\n";
+                _detailed += "Du côté " + _sides[i] + ", les héros de ce combat sont ";
                 _imp[i].Sort();
                 _technical += _general[i][_imp[i][0].Id].ToString() + "\n";
                 _generalBest[i].Add(_general[i][_imp[i][0].Id]);
+                _detailed += _general[i][_imp[i][0].Id].Name;
                 if (_imp[i].Count > 1 && _imp[i][1] != null)
                 {
                     _technical += _general[i][_imp[i][1].Id].ToString() + "\n";
                     _generalBest[i].Add(_general[i][_imp[i][1].Id]);
+                    _detailed += " et " + _general[i][_imp[i][1].Id].Name;
                 }
+                _detailed += "\n";
                 
             }
             _technical += "\n";
+            _detailed += "\n";
         }
 
         /// <summary>
@@ -397,24 +458,35 @@ namespace CEBattle
         public void Phase5()
         {
             int l = 0;
+            int w = 1;
             int lost = Math.Abs(_totalForceBonus[0] - _totalForceBonus[1]);
             // Get losing side
             if (_totalForceBonus[0] == _totalForceBonus[1])
             {
                 _technical += "Rien de perdu, match égale.\n\n";
+                _detailed += "Aucune armée n'a laissé un pouce de terrain!\n\n";
                 return;
             }
             else if(_totalForceBonus[0] < _totalForceBonus[1])
             {
                 l = 0;
+                w = 1;
             }
             else
             {
                 l = 1;
+                w = 0;
             }
+
+            int attackLost = (int)(Math.Min(_generalBest[l][0].NbArmy, lost) * 0.5f);
+            _technical += "L'armée " + _generalBest[w][0].Name + " a réussi la percée.\n";
+            _detailed += "Le responsable de la percée est nul autre que " + _generalBest[w][0].Name + "!\n";
+            
 
             // Check the losing general OR fortification
             _technical += "Perdant: " + _sides[l] + "\n";
+            _detailed += "Le groupe " + _sides[l] + " sembre perdre cette escarmouche.\n";
+
 
             // Losing can only be highlight general and fortication!
             // Fortification level + Defense level
@@ -422,14 +494,18 @@ namespace CEBattle
             if (isOnFor && _for[l] != 0)
             {
                 _technical += "Les défenses absorbe les dégats\n";
+                _detailed += "Heureusement, les défenses mise en place assure un repli efficace\n";
                 int thresh = (int) (_generalBest[l][0].NbArmy * Config.GetForticationPower(_for[l]));
                 if (lost > thresh)
                 {
+                    attackLost = (int)(attackLost * 0.7f);
                     _for[l]--;
                     _technical += "Et elle brise, c'est maintenant équivalent à: " + Config.EnumToString(_for[l]) + "\n";
+                    _detailed += "...et les fortications actuelles prennent de lourdes dégâts.\n";
                 }
                 else
                 {
+                    attackLost = (int)(attackLost*0.5f);
                     _technical += "Les défenses tiennent le coup.\n";
                 }
             }
@@ -444,21 +520,25 @@ namespace CEBattle
                         {
                             if (a.Stat.Defense < 0)
                             {
+                                _detailed += "Hô non, le " + a.Name + " est un piège, les pertes sont encore plus lourdes..\n";
                                 _technical += "Défense externe " + a.Name + " est un piège.\n";
                                 int extraLost = (int)((float)lost * -a.Stat.Defense);
                                 lost += extraLost;
                                 _technical += "Perte additionnel: " + extraLost + "\n";
+                                attackLost = (int)(attackLost * 0.5f);
                             }
                             else {
                                 bool block = WarMath.ResultChance(a.Stat.Defense);
                                 if (block)
                                 {
                                     lost = 0;
+                                    _detailed += "Heureusement, " + a.Name + " permet de faire un repli efficace en dernier recours\n";
                                     _technical += "Défense externe " + a.Name + " prend l'assault.\n";
                                 }
                                 else
                                 {
                                     _technical += "Défense externe " + a.Name + " n'est pas assez fort pour bloquer l'assault.\n";
+                                    attackLost = (int)(attackLost * 0.5f);
                                 }
                             }
                             a.UsedAddOn();
@@ -467,12 +547,14 @@ namespace CEBattle
                     }
                 }
 
-                //General take the blow
+                //Generals take the blow
                 if (lost > 0)
                 {
                     int leftOver = _generalBest[l][0].LosingArmy(lost);
                     _technical += "Le général " + _generalBest[l][0].Name + " prend le coup.\n";
                     _technical += _generalBest[l][0].ToDetailedHit();
+                    _detailed += "Le général " + _generalBest[l][0].Name + " a prit le plus gros de l'assault.\n";
+                    _detailed += _generalBest[l][0].ToDetailedHit();
 
 
                     if (leftOver > 0 && _generalBest[l].Count > 1)
@@ -480,10 +562,17 @@ namespace CEBattle
                         _technical += "En plus, le général " + _generalBest[l][1].Name + " prend le coup.\n";
                         _generalBest[l][1].LosingArmy(leftOver);
                         _technical += _generalBest[l][1].ToDetailedHit();
+                        _detailed += "Le coup fut tellement puissant que le général " + _generalBest[l][1].Name + " a aussi encaissé.\n";
+                        _detailed += _generalBest[l][1].ToDetailedHit();
                     }
                 }
             }
+
+            _generalBest[w][0].LosingArmy((int)(attackLost));
+            _technical += _generalBest[w][0].ToDetailedHit();
+
             _technical += "\n";
+            _detailed += "\n";
         }
 
         /// <summary>
@@ -538,10 +627,11 @@ namespace CEBattle
                             if (revive)
                             {
                                 _technical += "L'aide " + a.Name + " donne un boost de morale à " + _generalBest[l][i].Name + ", le groupe revient sur le champ de bataille.\n";
+                                _detailed += "Incroyable! " + "L'aide" + a.Name + " donne un boost de morale à " + _generalBest[l][i].Name + ", le groupe revient sur le champ de bataille.\n";
                             }
                             else
                             {
-                                _technical += "L'aide " + a.Name + " n,est aps suffisante pour le morale.\n";
+                                _technical += "L'aide " + a.Name + " n'est pas suffisante pour le morale.\n";
                             }
                             a.UsedAddOn();
                             break;
@@ -563,6 +653,7 @@ namespace CEBattle
             if (moraleAction[0] || moraleAction[1])
             {
                 _technical += "Il y a des otages.\n";
+                _detailed += "Hô non, il y a des otages!";
 
                 int massacre = 0;
                 int mercy = 0;
@@ -571,7 +662,7 @@ namespace CEBattle
                 {
                     if (g.IsValid())
                     {
-                        int nego = WarMath.ResultPower(100 + (int)(100 * g.Stat.NegoPower));
+                        int nego = WarMath.ResultPower(100 + (int)(100 * g.Stat.NegoPower), true);
                         switch (g.Stat.Behaviour)
                         {
                             case Config.EndBehaviour.None:
@@ -587,7 +678,7 @@ namespace CEBattle
                         }
                     }
                 }
-                _technical += "Decision sur les fuyards: \n";
+                _technical += "Décision sur les fuyards: \n";
                 _technical += Config.EnumToString(Config.EndBehaviour.Mercy) + ": " + mercy + "\n";
                 _technical += Config.EnumToString(Config.EndBehaviour.Carnage) + ": " + massacre + "\n";
                 _technical += Config.EnumToString(Config.EndBehaviour.Hostage) + ": " + hostage + "\n";
@@ -617,6 +708,7 @@ namespace CEBattle
                     }
                 }
                 _technical += "Décision final: " + Config.EnumToString(decision);
+                _detailed += "Le conseil de guerre a décidé, la décision sur les otages est: " + Config.EnumToString(decision);
 
                 for (int i = 0; i < 2; i++)
                 {
@@ -636,6 +728,7 @@ namespace CEBattle
                                         if (escape)
                                         {
                                             _technical += "Le général " + _generalBest[l][i].Name + " s'enfuit grâce à " + a.Name + "\n";
+                                            _detailed += "Le général " + _generalBest[l][i].Name + " utilise son dernier atout, " + a.Name + ", et s'enfuit.\n";
                                             moraleAction[i] = false;
                                             continue;
                                         }
@@ -649,31 +742,39 @@ namespace CEBattle
                             }
 
                             _technical += "Le groupe du général " + _generalBest[l][i].Name + "\n";
+                            _detailed += "Le groupe du général " + _generalBest[l][i].Name + "\n";
+
                             if (decision == Config.EndBehaviour.Hostage)
                             {
                                 _technical += " est prit en otage\n";
+                                _detailed += " est prit en otage\n";
                             }
                             if (decision == Config.EndBehaviour.Carnage)
                             {
-                                _technical += "se fait massacrer\n";
+                                _technical += " se fait massacrer\n";
+                                _detailed += " se fait massacrer\n";
                             }
                             if (_generalBest[l][i].GeneralDead)
                             {
                                 _technical += "Le général " + _generalBest[l][i].Name + " est";
+                                _detailed += "Le général " + _generalBest[l][i].Name + " est";
                             }
                             if (decision == Config.EndBehaviour.Hostage)
                             {
                                 _technical += " prit en otage\n";
+                                _detailed += " prit en otage\n";
                             }
                             if (decision == Config.EndBehaviour.Carnage)
                             {
                                 _technical += " massacré\n";
+                                _detailed += " massacré\n";
                             }
 
                         }
                         else
                         {
                             _technical += "\nLes fuyards ont quitter le champ de bataille.";
+                            _detailed += "\nLes fuyards ont quitter le champ de bataille.";
                         }
                         // Mercy and nothing is normal
                     }
@@ -709,6 +810,8 @@ namespace CEBattle
                 {
                     _technical += "\n\nLa bataille est fini " + _sides[i] + " est perdant.\n";
                     _technical += _sides[adverse] + " a gagné la bataille de " + _battleName;
+                    _detailed += "La bataille est fini! " + _sides[i] + " a perdu la bataille de " + _battleName + "\n";
+                    _detailed += _sides[adverse] + " est victorieux!!\n";
 
                     Final = true;
                     return;

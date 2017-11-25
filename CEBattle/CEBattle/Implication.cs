@@ -48,7 +48,7 @@ namespace CEBattle
         public Implication(int nbArmy, float attack)
         {
             ArmyTotal = nbArmy;
-            Army = WarMath.ResultPower(nbArmy);
+            Army = WarMath.ResultPower(nbArmy, true);
             AttackPercent = attack;
             Attack = (int)(ArmyTotal * AttackPercent);
             ArmyBonus = Army + Attack;

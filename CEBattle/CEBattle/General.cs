@@ -99,8 +99,9 @@ namespace CEBattle
         /// * Uses for normal general
         /// </summary>
         /// <param name="lost">The initial lost</param>
+        /// <param name="withMoral">Affecting moral?</param>
         /// <returns>The left over unit to die if too much.</returns>
-        public int LosingArmy(int lost)
+        public int LosingArmy(int lost, bool withMoral=true)
         {
             int leftOver = 0;
             // Step 1, get the real number of lost
@@ -129,16 +130,19 @@ namespace CEBattle
             }
 
             // Step 4, decrease moral
-            float ratio = (float)(_initial-NbArmy) / _initial;
-            float ratioInstant = (float)(initialActual - NbArmy) / initialActual;
-            Console.WriteLine("Moral perte: " + ratio);
-            Stat.Moral += ratio;
-            if (ratioInstant > 0.5f) // Too much for limit
+            if (withMoral)
             {
-                Stat.MoralLimit -= 0.2f;
+                float ratio = (float)(_initial - NbArmy) / _initial;
+                float ratioInstant = (float)(initialActual - NbArmy) / initialActual;
+                Console.WriteLine("Moral perte: " + ratio);
+                Stat.Moral += ratio;
+                if (ratioInstant > 0.5f) // Too much for limit
+                {
+                    Stat.MoralLimit -= 0.2f;
+                }
+                Console.WriteLine("Moral: " + Stat.Moral);
+                Console.WriteLine("Moral limite: " + Stat.MoralLimit);
             }
-            Console.WriteLine("Moral: " + Stat.Moral);
-            Console.WriteLine("Moral limite: " + Stat.MoralLimit);
 
             // Step 5, is defeated because of moral?
             if (Stat.MoralLimit < Stat.Moral)

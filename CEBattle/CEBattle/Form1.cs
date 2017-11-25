@@ -93,17 +93,26 @@ namespace CEBattle
             _mainTab.SelectedIndex = 1;
             _reportTab.SelectedIndex = 2;
             _technicalTxt.Text = "";
+            _detailedTxt.Text = "";
 
             Report r;
             do
             {
                 r = _war.Skirmish();
                 string[] text = r.ToTechnical().Split('\n');
+                string[] textD = r.ToDetailed().Split('\n');
                 for (int i = 0; i < text.Length; i++)
                 {
                     _technicalTxt.AppendText(text[i]);
                     _technicalTxt.AppendText(Environment.NewLine);
+                    
                 }
+                for (int i = 0; i < textD.Length; i++)
+                {
+                    _detailedTxt.AppendText(textD[i]);
+                    _detailedTxt.AppendText(Environment.NewLine);
+                }
+
                 _war.Round++;
             } while (!r.Final);
 
@@ -569,6 +578,10 @@ namespace CEBattle
             SaveFile(".\\technical" + _battleName.Text + "_"
                 + _armyName1.Text + "_VS_" + _armyName2.Text + "_" + DateTime.Now.Hour + "-"
                 + DateTime.Now.Minute + "-" + DateTime.Now.Second + ".txt", _technicalTxt.Text);
+
+            SaveFile(".\\detailed" + _battleName.Text + "_"
+                + _armyName1.Text + "_VS_" + _armyName2.Text + "_" + DateTime.Now.Hour + "-"
+                + DateTime.Now.Minute + "-" + DateTime.Now.Second + ".txt", _detailedTxt.Text);
 
             // TODO all text
         }
