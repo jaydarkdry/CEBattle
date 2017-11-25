@@ -28,7 +28,7 @@ namespace CEBattle
                 case 4:
                     return "La première ligne défensive est percée.\n";
                 default:
-                    return "L'ardeur des combattants résonnent dans l'air.\n";
+                    return "L'ardeur des combattants résonne dans l'air.\n";
             }
         }
     }

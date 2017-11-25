@@ -115,7 +115,7 @@ namespace CEBattle
 
             if (_round == 1)
             {
-                _detailed += "La bataille est sur point de commencer, les forces sont placé et les dés sont jetés,\n";
+                _detailed += "La bataille est sur point de commencer, les forces sont placées et les dés sont jetés,\n";
                 _detailed += "Chaque groupe est prêt à une stratégie, l'issue se résout ce soir.\n";
 
                 _detailed += "\nLa Bataille de " + _battleName + " commence!!";
@@ -494,7 +494,7 @@ namespace CEBattle
             if (isOnFor && _for[l] != 0)
             {
                 _technical += "Les défenses absorbe les dégats\n";
-                _detailed += "Heureusement, les défenses mise en place assure un repli efficace\n";
+                _detailed += "Heureusement, les défenses misent en place assure un repli efficace\n";
                 int thresh = (int) (_generalBest[l][0].NbArmy * Config.GetForticationPower(_for[l]));
                 if (lost > thresh)
                 {

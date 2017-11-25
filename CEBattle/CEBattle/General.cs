@@ -168,7 +168,7 @@ namespace CEBattle
             }
             if (_moralDefeated)
             {
-                txt += "Le défaite est dû au moral.\n";
+                txt += "Le défaite est due au moral.\n";
             }
             if (GeneralDead)
             {
